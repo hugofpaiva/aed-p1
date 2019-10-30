@@ -331,7 +331,7 @@ static void generate_all_permutations(int n,int m,int a[n])// é introduzido um 
       min_cost = custo;
 
     min_cost_assignment[n-1]=min_cost;// confirmar com o stor!
-    max_cost_assignment[n-1]=max_cost;
+    max_cost_assignment[n-1]=max_cost;// confirmar com o stor!
 
     n_visited++;
     // place your code to update the best and worst solutions, and to update the histogram here
