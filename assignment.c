@@ -2,7 +2,7 @@
 //
 // AED, 2019/2020
 //
-// TODO: place the student number and name here
+// TODO: 93195 Hugo Filipe Ribeiro Paiva de Almeida
 // TODO: place the student number and name here (if applicable)
 // TODO: place the student number and name here (if applicable)
 //
@@ -299,7 +299,7 @@ int costAssignment(int n, int a[n])
 
 }
 
-static void generate_all_permutations(int n,int m,int a[n])
+static void generate_all_permutations(int n,int m,int a[n])// é introduzido um vetor a que vai de 0 até n
 {
   if(m < n - 1)
   {
@@ -315,18 +315,29 @@ static void generate_all_permutations(int n,int m,int a[n])
 #undef swap
     }
   }
-  else
+  else// devido à recursividade, chega a uma altura que o m passa a ser igual ao n e portanto faz este else. Desta forma, vai correr todos os "a"s.
   {
     //
     // visit the permutation (TODO: change this ...)
     //
+    printAssignment(n,a); //Apenas para debugging para conseguir perceber melhor o problema.
+
+    int custo = costAssignment(n,a); //Custo total
+    
+    if(custo > max_cost)
+      max_cost = custo;
+
+    if(custo < min_cost)
+      min_cost = custo;
+
+    min_cost_assignment[n-1]=min_cost;// confirmar com o stor!
+    max_cost_assignment[n-1]=max_cost;
+
     n_visited++;
     // place your code to update the best and worst solutions, and to update the histogram here
 
-    printAssignment(n,a); //Apenas para debugging para conseguir perceber melhor o problema.
-
-    costAssignment(n,a); //Custo total
   }
+  
 }
 
 
