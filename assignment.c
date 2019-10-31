@@ -269,17 +269,29 @@ static void show_solutions(int n,char *header,int what_to_show)
   {
     // place your code to print the histogram here
     FILE *f = fopen("ocorrencias.txt", "w");
+    FILE *gnu = fopen("ocorrenciasgnu.txt", "w");
     if (f == NULL)
     {
-    printf("Error opening file!\n");
+    printf("Erro a abrir o ficheiro ocorrencias!\n");
+    exit(1);
+    }
+    if (gnu == NULL)
+    {
+    printf("Erro a abrir o ficheiro ocorrenciasgnu!\n");
     exit(1);
     }
 
     for(int i=0; i<max_n*t_range; i++)
     {
     fprintf(f, "%d\n",histogram[i]);
+    fprintf(gnu, "%d\t%d\n",i,histogram[i]);
     }
     fclose(f);
+    fclose(gnu);
+
+    //int status = system("gnuplot -e \" plot 'ocorrenciasgnu.txt'  title 'Values by Color'\");
+    int codigou = system("gnuplot -e \"set terminal jpeg; plot 'ocorrenciasgnu.txt' with linespoints linestyle 1\" > out.jpg");
+
   }
 }
 
