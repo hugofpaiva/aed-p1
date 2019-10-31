@@ -6,7 +6,7 @@ y = fscanf(file,'%f');
 fclose(file);
 
 
-bar(x, y);
+hist(y);
 xlabel('Custos');
 ylabel('Nº de Ocorrências');
 title('Histograma');
