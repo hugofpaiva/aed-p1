@@ -49,6 +49,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 //#define NDEBUG  // uncomment to skip disable asserts (makes the code slightly faster)
 #include <assert.h>
@@ -195,6 +196,7 @@ static int min_cost,min_cost_assignment[max_n]; // smallest cost information
 static int max_cost,max_cost_assignment[max_n]; // largest cost information
 static long n_visited; // number of permutations visited (examined)
 // place your histogram global variable here
+static int histogram[max_n*t_range]; // Cada valor do array histogram corresponde ao numero de ocorrências do custo, que é o indice desse valor
 static double cpu_time;
 
 #define minus_inf  -1000000000  // a very small integer
@@ -206,6 +208,7 @@ static void reset_solutions(void)
   max_cost = minus_inf;
   n_visited = 0l;
   // place your histogram initialization code here
+  memset(histogram,0,sizeof(histogram));
   cpu_time = 0.0;
 }
 
@@ -265,6 +268,18 @@ static void show_solutions(int n,char *header,int what_to_show)
   if((what_to_show & show_histogram) != 0)
   {
     // place your code to print the histogram here
+    FILE *f = fopen("ocorrencias.txt", "w");
+    if (f == NULL)
+    {
+    printf("Error opening file!\n");
+    exit(1);
+    }
+
+    for(int i=0; i<max_n*t_range; i++)
+    {
+    fprintf(f, "%d\n",histogram[i]);
+    }
+    fclose(f);
   }
 }
 
@@ -285,16 +300,17 @@ void printAssignment(int n, int a[n])
   printf("  assignment ...");
   for (int i = 0; i < n; i++)
     printf(" %d",a[i]);
-    printf("\n");
+  printf("\n");
 }
 
 int costAssignment(int n, int a[n])
 {
   int custo = 0;
 
-   for (int i = 0; i < n; i++)
+  for (int i = 0; i < n; i++)
     custo += cost[i][a[i]];
-  printf("Custo: %d \n",custo);
+  histogram[custo]++;
+  //printf("Custo: %d \n",custo);
   return custo;
 
 }
@@ -320,21 +336,28 @@ static void generate_all_permutations(int n,int m,int a[n])// é introduzido um 
     //
     // visit the permutation (TODO: change this ...)
     //
-    printAssignment(n,a); //Apenas para debugging para conseguir perceber melhor o problema.
+    //printAssignment(n,a); //Apenas para debugging para conseguir perceber melhor o problema.
 
     int custo = costAssignment(n,a); //Custo total
     
     if(custo > max_cost)
+    {
       max_cost = custo;
+      for (int i=0 ; i<n ; i++)
+      max_cost_assignment[i]=a[i];
+    }
 
     if(custo < min_cost)
+    {
       min_cost = custo;
-
-    min_cost_assignment[n-1]=min_cost;// confirmar com o stor!
-    max_cost_assignment[n-1]=max_cost;// confirmar com o stor!
+      for(int i=0; i<n ; i++)
+      min_cost_assignment[i]=a[i];
+    }
 
     n_visited++;
     // place your code to update the best and worst solutions, and to update the histogram here
+
+
 
   }
   
