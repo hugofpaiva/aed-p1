@@ -290,7 +290,7 @@ static void show_solutions(int n,char *header,int what_to_show)
     fclose(gnu);
 
     //int status = system("gnuplot -e \" plot 'ocorrenciasgnu.txt'  title 'Values by Color'\");
-    int codigou = system("gnuplot -e \"set terminal jpeg; plot 'ocorrenciasgnu.txt' with linespoints linestyle 1\" > out.jpg");
+    int codigou = system("gnuplot -e \"set terminal jpeg; plot 'ocorrenciasgnu.txt' with linespoints linestyle 1\" > out.jpg");// para sair uma imagem pelo gnu plot. Tem de ser retificado.
 
   }
 }
