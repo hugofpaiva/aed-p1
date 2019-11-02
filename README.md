@@ -22,9 +22,7 @@ cc -Wall -O2 assignment.c -o <executable_filename> -lm
 -e		for n=3 and n=5 using Brute Force strategy
 -f <seed>	uses Brute Force strategy with specified Seed value
 -b <seed>	uses Branch and Bound strategy with specified Seed value
--r <seed>	uses Brute Force strategy with Random Permutations generated n times and a specified Seed value
-	
-
+-r <seed>	uses Brute Force strategy with Random Permutations generated n times and a specified Seed value	
 ```
 
 
