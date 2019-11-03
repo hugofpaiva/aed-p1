@@ -311,7 +311,7 @@ static void show_solutions(int n, char *header, int what_to_show)
     fclose(gnu);
 
     //int status = system("gnuplot -e \" plot 'ocorrenciasgnu.txt'  title 'Values by Color'\");
-    int codigou = system("gnuplot -e \"set terminal jpeg; plot 'ocorrenciasgnu.txt' with linespoints linestyle 1\" > out.jpg"); // para sair uma imagem pelo gnu plot. Tem de ser retificado.
+    //int codigou = system("gnuplot -e \"set terminal jpeg; plot 'ocorrenciasgnu.txt' with linespoints linestyle 1\" > out.jpg"); // para sair uma imagem pelo gnu plot. Tem de ser retificado.
   }
 }
 
@@ -462,7 +462,8 @@ int main(int argc, char **argv)
        printf("\n");
        return 0;
     }
-
+  
+  
     if (argv[1][0] == '-' && argv[1][1] == 'b')
     {
       seed = atoi(argv[2]); // seed = student number
@@ -491,33 +492,40 @@ int main(int argc, char **argv)
        printf("\n");
        return 0;*/
     }
-
+  }
+  if (argc == 5)
+  {
     if (argv[1][0] == '-' && argv[1][1] == 'r')
     {
-      seed = atoi(argv[2]); // seed = student number
-      if (seed >= 0 && seed <= 1000000)
-      {
-        for (int n = 1; n <= max_n; n++)
+        for (int n = 13; n <= 14; n++)
         {
-
-          //
-          // place here your code that generates the random permutations
-          //
-
-          //
-          // ...
-          //
-
-          //
-          // done
-          //
+          for (int i = 2; i<=4; i++)
+          {
+            seed = atoi(argv[i]); // seed = student number
+              if (seed >= 0 && seed <= 1000000)
+              {
+                for (int z=0; z<=(pow(10,6)); z++)
+                {
+                  printf("%d\n", seed);
+                  printf("%d\n", z);
+                  int a[n];
+                  for (int l = 0; l < n; l++)
+                    a[l] = l; // initial permutation
+                  reset_solutions();
+                  (void)elapsed_time();
+                  random_permutation(n, a);
+                  cpu_time = elapsed_time();
+                  printf("%d",n);
+                  show_solutions(n, "Random Permutation", show_info_2 | show_min_solution | show_max_solution);
+                }
+              }
         }
       }
        printf("\n");
        return 0;
     }
-   
   }
+  
   fprintf(stderr, "usage: %s -e              # for the examples\n", argv[0]);
   fprintf(stderr, "usage: %s student_number\n", argv[0]);
   return 1;
