@@ -199,7 +199,6 @@ static long n_visited;                           // number of permutations visit
 // place your histogram global variable here
 static int histogram[max_n * t_range]; // Cada valor do array histogram corresponde ao numero de ocorrências do custo, que é o indice desse valor
 static double cpu_time;
-static int partial_cost;
 
 #define minus_inf -1000000000 // a very small integer
 #define plus_inf +1000000000  // a very large integer
@@ -380,13 +379,17 @@ static void generate_all_permutations(int n, int m, int a[n]) // é introduzido 
 
 static void generate_all_permutations_branch_and_bound(int n, int m, int a[n], int partial_cost) // é introduzido um vetor a que vai de 0 até n
 {
-  if (m < n - 1)
+  if (min_cost < (3 * (n - m -1) + partial_cost))
+    return;
+  else
   {
-    //
-    // not yet at the end; try all possibilities for a[m]
-    //
-    for (int i = m; i < n; i++)
+    if (m < n - 1)
     {
+      //
+      // not yet at the end; try all possibilities for a[m]
+      //
+      for (int i = m; i < n; i++)
+      {
 #define swap(i, j) \
   do               \
   {                \
@@ -394,37 +397,39 @@ static void generate_all_permutations_branch_and_bound(int n, int m, int a[n], i
     a[i] = a[j];   \
     a[j] = t;      \
   } while (0)
-      swap(i, m);                                                           // exchange a[i] with a[m]
-      generate_all_permutations_branch_and_bound(n, m + 1, a, partial_cost + cost[m][a[m]]); // recurse
-      swap(i, m);                                                           // undo the exchange of a[i] with a[m]
+        swap(i, m);                                                                              // exchange a[i] with a[m]
+        generate_all_permutations_branch_and_bound(n, m + 1, a, (partial_cost + cost[m][a[m]])); // recurse
+        swap(i, m);                                                                              // undo the exchange of a[i] with a[m]
 #undef swap
+      }
     }
-  }
-  else // devido à recursividade, chega a uma altura que o m passa a ser igual ao n e portanto faz este else. Desta forma, vai correr todos os "a"s.
-  {
-    //
-    // visit the permutation (TODO: change this ...)
-    //
-    //printAssignment(n,a); //Apenas para debugging para conseguir perceber melhor o problema.
-
-    int custo = costAssignment(n, a); //Custo total
-
-    if (custo > max_cost)
+    else // devido à recursividade, chega a uma altura que o m passa a ser igual ao n e portanto faz este else. Desta forma, vai correr todos os "a"s.
     {
-      max_cost = custo;
-      for (int i = 0; i < n; i++)
-        max_cost_assignment[i] = a[i];
-    }
+      //
+      // visit the permutation (TODO: change this ...)
+      //
+      //printAssignment(n,a); //Apenas para debugging para conseguir perceber melhor o problema.
 
-    if (custo < min_cost)
-    {
-      min_cost = custo;
-      for (int i = 0; i < n; i++)
-        min_cost_assignment[i] = a[i];
-    }
+      int custo = costAssignment(n, a); //Custo total
 
-    n_visited++;
-    // place your code to update the best and worst solutions, and to update the histogram here
+      // Meter isto tudo simplificado numa função em que entre o custo e o a, p. ex definecost(custo,a)
+      if (custo > max_cost)
+      {
+        max_cost = custo;
+        for (int i = 0; i < n; i++)
+          max_cost_assignment[i] = a[i];
+      }
+
+      if (custo < min_cost)
+      {
+        min_cost = custo;
+        for (int i = 0; i < n; i++)
+          min_cost_assignment[i] = a[i];
+      }
+
+      n_visited++;
+      // place your code to update the best and worst solutions, and to update the histogram here
+    }
   }
 }
 
@@ -541,6 +546,7 @@ int main(int argc, char **argv)
       {
         for (int n = 1; n <= max_n; n++)
         {
+          init_costs(n);
 
           //
           // place here your code that solves the problem with branch-and-bound
@@ -548,6 +554,7 @@ int main(int argc, char **argv)
 
           if (n <= 16) // use a smaller limit here while developing your code
           {
+            
             int a[n];
             for (int i = 0; i < n; i++)
               a[i] = i; // initial permutation
@@ -555,6 +562,7 @@ int main(int argc, char **argv)
             (void)elapsed_time();
             generate_all_permutations_branch_and_bound(n, 0, a, 0);
             cpu_time = elapsed_time();
+            printf("%d\n",n);
             show_solutions(n, "Brute force with branch-and-bound", show_info_2 | show_min_solution);
           }
         }
