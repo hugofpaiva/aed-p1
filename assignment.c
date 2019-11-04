@@ -190,26 +190,6 @@ static double elapsed_time(void)
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
-// function to generate a pseudo-random permutation
-//
-
-void random_permutation(int n, int t[n])
-{
-  assert(n >= 1 && n <= 1000000);
-  for (int i = 0; i < n; i++)
-    t[i] = i;
-  for (int i = n - 1; i > 0; i--)
-  {
-    int j = (int)floor((double)(i + 1) * (double)random() / (1.0 + (double)RAND_MAX)); // range 0..i
-    assert(j >= 0 && j <= i);
-    int k = t[i];
-    t[i] = t[j];
-    t[j] = k;
-  }
-}
-
-////////////////////////////////////////////////////////////////////////////////////////////////////
-//
 // place to store best and worst solutions (also code to print them)
 //
 
@@ -397,6 +377,42 @@ static void generate_all_permutations(int n, int m, int a[n]) // é introduzido 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
+// function to generate a pseudo-random permutation
+//
+
+void random_permutation(int n, int t[n])
+{
+  assert(n >= 1 && n <= 1000000);
+  for (int i = 0; i < n; i++)
+    t[i] = i;
+  for (int i = n - 1; i > 0; i--)
+  {
+    int j = (int)floor((double)(i + 1) * (double)random() / (1.0 + (double)RAND_MAX)); // range 0..i
+    assert(j >= 0 && j <= i);
+    int k = t[i];
+    t[i] = t[j];
+    t[j] = k;
+  }
+
+  int custo = costAssignment(n, t); //Custo total
+
+  if (custo > max_cost)
+  {
+    max_cost = custo;
+    for (int i = 0; i < n; i++)
+      max_cost_assignment[i] = t[i];
+  }
+
+  if (custo < min_cost)
+  {
+    min_cost = custo;
+    for (int i = 0; i < n; i++)
+      min_cost_assignment[i] = t[i];
+  }
+}
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+//
 // main program
 //
 
@@ -459,11 +475,10 @@ int main(int argc, char **argv)
           }
         }
       }
-       printf("\n");
-       return 0;
+      printf("\n");
+      return 0;
     }
-  
-  
+
     if (argv[1][0] == '-' && argv[1][1] == 'b')
     {
       seed = atoi(argv[2]); // seed = student number
@@ -493,39 +508,45 @@ int main(int argc, char **argv)
        return 0;*/
     }
   }
-  if (argc == 5)
+  if (argc == 6)
   {
     if (argv[1][0] == '-' && argv[1][1] == 'r')
     {
-        for (int n = 13; n <= 14; n++)
+      int N = atoi(argv[5]);
+      int iterations = 0;
+      for (int i = 2; i <= 4; i++)
+      {
+        seed = atoi(argv[i]); // seed = student number
+        if (seed >= 0 && seed <= 1000000)
         {
-          for (int i = 2; i<=4; i++)
+          for (int n = 13; n <= 14; n++)
           {
-            seed = atoi(argv[i]); // seed = student number
-              if (seed >= 0 && seed <= 1000000)
-              {
-                for (int z=0; z<=(pow(10,6)); z++)
-                {
-                  printf("%d\n", seed);
-                  printf("%d\n", z);
-                  int a[n];
-                  for (int l = 0; l < n; l++)
-                    a[l] = l; // initial permutation
-                  reset_solutions();
-                  (void)elapsed_time();
-                  random_permutation(n, a);
-                  cpu_time = elapsed_time();
-                  printf("%d",n);
-                  show_solutions(n, "Random Permutation", show_info_2 | show_min_solution | show_max_solution);
-                }
-              }
+            reset_solutions();
+            (void)elapsed_time();
+            //pow(10,6)
+            for (int z = 1; z <= N; z++)
+            {
+              iterations++;
+              printf("%d\n", seed);
+              printf("%d\n", z);
+              int a[n];
+              for (int l = 0; l < n; l++)
+                a[l] = l; // initial permutation
+              random_permutation(n, a);
+              printf("%d", n);
+            }
+            cpu_time = elapsed_time();
+            show_solutions(n, "Random Permutation", show_info_1 | show_min_solution | show_max_solution);
+          }  
         }
       }
-       printf("\n");
-       return 0;
+      printf("\n");
+      printf("%d", iterations);
+      printf("\n");
+      return 0;
     }
   }
-  
+
   fprintf(stderr, "usage: %s -e              # for the examples\n", argv[0]);
   fprintf(stderr, "usage: %s student_number\n", argv[0]);
   return 1;
