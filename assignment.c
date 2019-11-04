@@ -3,8 +3,8 @@
 // AED, 2019/2020
 //
 // TODO: 93195 Hugo Filipe Ribeiro Paiva de Almeida
-// TODO: place the student number and name here (if applicable)
-// TODO: place the student number and name here (if applicable)
+// TODO: 93019 José Lucas Sousa
+// TODO: 91153 João Laranjo
 //
 // Brute-force solution of the assignment problem (https://en.wikipedia.org/wiki/Assignment_problem)
 //
@@ -379,6 +379,56 @@ static void generate_all_permutations(int n, int m, int a[n]) // é introduzido 
   }
 }
 
+static void generate_all_permutations_branch_and_bound(int n, int m, int a[n], int partial_cost) // é introduzido um vetor a que vai de 0 até n
+{
+  if (m < n - 1)
+  {
+    //
+    // not yet at the end; try all possibilities for a[m]
+    //
+    for (int i = m; i < n; i++)
+    {
+#define swap(i, j) \
+  do               \
+  {                \
+    int t = a[i];  \
+    a[i] = a[j];   \
+    a[j] = t;      \
+  } while (0)
+      swap(i, m);                             // exchange a[i] with a[m]
+      generate_all_permutations(n, m + 1, a, partial_cost + cost[m][a[m]]); // recurse
+      swap(i, m);                             // undo the exchange of a[i] with a[m]
+#undef swap
+    }
+  }
+  else // devido à recursividade, chega a uma altura que o m passa a ser igual ao n e portanto faz este else. Desta forma, vai correr todos os "a"s.
+  {
+    //
+    // visit the permutation (TODO: change this ...)
+    //
+    //printAssignment(n,a); //Apenas para debugging para conseguir perceber melhor o problema.
+
+    int custo = costAssignment(n, a); //Custo total
+
+    if (custo > max_cost)
+    {
+      max_cost = custo;
+      for (int i = 0; i < n; i++)
+        max_cost_assignment[i] = a[i];
+    }
+
+    if (custo < min_cost)
+    {
+      min_cost = custo;
+      for (int i = 0; i < n; i++)
+        min_cost_assignment[i] = a[i];
+    }
+
+    n_visited++;
+    // place your code to update the best and worst solutions, and to update the histogram here
+  }
+}
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // function to generate a pseudo-random permutation
@@ -488,7 +538,7 @@ int main(int argc, char **argv)
     if (argv[1][0] == '-' && argv[1][1] == 'b')
     {
       seed = atoi(argv[2]); // seed = student number
-      /*if (seed >= 0 && seed <= 1000000)
+      if (seed >= 0 && seed <= 1000000)
       {
         for (int n = 1; n <= max_n; n++)
         {
@@ -511,7 +561,7 @@ int main(int argc, char **argv)
         }
       }
        printf("\n");
-       return 0;*/
+       return 0;
     }
   }
   if (argc == 6)
