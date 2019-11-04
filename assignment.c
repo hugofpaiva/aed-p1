@@ -317,12 +317,10 @@ void printAssignment(int n, int a[n])
 int costAssignment(int n, int a[n])
 {
   int custo = 0;
-  
 
   for (int i = 0; i < n; i++)
   {
     custo += cost[i][a[i]];
-
   }
   histogram[custo]++;
   //printf("Custo: %d \n",custo);
@@ -395,9 +393,9 @@ static void generate_all_permutations_branch_and_bound(int n, int m, int a[n], i
     a[i] = a[j];   \
     a[j] = t;      \
   } while (0)
-      swap(i, m);                             // exchange a[i] with a[m]
+      swap(i, m);                                                           // exchange a[i] with a[m]
       generate_all_permutations(n, m + 1, a, partial_cost + cost[m][a[m]]); // recurse
-      swap(i, m);                             // undo the exchange of a[i] with a[m]
+      swap(i, m);                                                           // undo the exchange of a[i] with a[m]
 #undef swap
     }
   }
@@ -560,8 +558,8 @@ int main(int argc, char **argv)
           }
         }
       }
-       printf("\n");
-       return 0;
+      printf("\n");
+      return 0;
     }
   }
   if (argc == 6)
@@ -592,7 +590,7 @@ int main(int argc, char **argv)
             }
             cpu_time = elapsed_time();
             show_solutions(n, "Random Permutation", show_info_1 | show_min_solution | show_max_solution);
-          }  
+          }
         }
       }
       printf("\n");
