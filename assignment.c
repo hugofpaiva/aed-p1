@@ -317,9 +317,13 @@ void printAssignment(int n, int a[n])
 int costAssignment(int n, int a[n])
 {
   int custo = 0;
+  
 
   for (int i = 0; i < n; i++)
+  {
     custo += cost[i][a[i]];
+
+  }
   histogram[custo]++;
   //printf("Custo: %d \n",custo);
   return custo;
@@ -400,7 +404,9 @@ void random_permutation(int n, int t[n])
   {
     max_cost = custo;
     for (int i = 0; i < n; i++)
+    {
       max_cost_assignment[i] = t[i];
+    }
   }
 
   if (custo < min_cost)
@@ -521,27 +527,24 @@ int main(int argc, char **argv)
         {
           for (int n = 13; n <= 14; n++)
           {
+            init_costs(n);
+            show_solutions(n, "Problem statement", show_info_1 | show_costs);
             reset_solutions();
             (void)elapsed_time();
             //pow(10,6)
             for (int z = 1; z <= N; z++)
             {
               iterations++;
-              printf("%d\n", seed);
-              printf("%d\n", z);
               int a[n];
               for (int l = 0; l < n; l++)
                 a[l] = l; // initial permutation
               random_permutation(n, a);
-              printf("%d", n);
             }
             cpu_time = elapsed_time();
             show_solutions(n, "Random Permutation", show_info_1 | show_min_solution | show_max_solution);
           }  
         }
       }
-      printf("\n");
-      printf("%d", iterations);
       printf("\n");
       return 0;
     }
