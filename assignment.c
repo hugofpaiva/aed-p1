@@ -199,6 +199,7 @@ static long n_visited;                           // number of permutations visit
 // place your histogram global variable here
 static int histogram[max_n * t_range]; // Cada valor do array histogram corresponde ao numero de ocorrências do custo, que é o indice desse valor
 static double cpu_time;
+static int partial_cost;
 
 #define minus_inf -1000000000 // a very small integer
 #define plus_inf +1000000000  // a very large integer
