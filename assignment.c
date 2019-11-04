@@ -395,7 +395,7 @@ static void generate_all_permutations_branch_and_bound(int n, int m, int a[n], i
     a[j] = t;      \
   } while (0)
       swap(i, m);                                                           // exchange a[i] with a[m]
-      generate_all_permutations(n, m + 1, a, partial_cost + cost[m][a[m]]); // recurse
+      generate_all_permutations_branch_and_bound(n, m + 1, a, partial_cost + cost[m][a[m]]); // recurse
       swap(i, m);                                                           // undo the exchange of a[i] with a[m]
 #undef swap
     }
