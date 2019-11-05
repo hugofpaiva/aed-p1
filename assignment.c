@@ -77,6 +77,7 @@
 static int cost[max_n][max_n];
 static int seed; // place a student number here!
 static int min_init_cost;
+static int max_init_cost;
 
 static void init_costs(int n)
 {
@@ -125,12 +126,15 @@ static void init_costs(int n)
   assert(n >= 1 && n <= max_n);
   srandom((unsigned int)seed * (unsigned int)max_n + (unsigned int)n);
   min_init_cost = cost[0][0];
+  max_init_cost = cost[0][0];
   for (int a = 0; a < n; a++)
     for (int t = 0; t < n; t++)
     {
       cost[a][t] = 3 + (random() % range) + (random() % range) + (random() % range); // [3,3*range]
       if(cost[a][t]<min_init_cost)
         min_init_cost=cost[a][t];
+      if(cost[a][t]>max_init_cost)
+        max_init_cost=cost[a][t];
     }
 
 
@@ -422,18 +426,61 @@ static void generate_all_permutations_branch_and_bound(int n, int m, int a[n], i
       int custo = costAssignment(n, a); //Custo total
 
       // Meter isto tudo simplificado numa função em que entre o custo e o a, p. ex definecost(custo,a)
-      if (custo > max_cost)
-      {
-        max_cost = custo;
-        for (int i = 0; i < n; i++)
-          max_cost_assignment[i] = a[i];
-      }
 
       if (custo < min_cost)
       {
         min_cost = custo;
         for (int i = 0; i < n; i++)
           min_cost_assignment[i] = a[i];
+      }
+
+      n_visited++;
+      // place your code to update the best and worst solutions, and to update the histogram here
+    }
+  }
+}
+
+static void generate_all_permutations_branch_and_bound_max(int n, int m, int max[n], int partial_cost) // é introduzido um vetor a que vai de 0 até n
+{
+  if (max_cost > (max_init_cost * (n-m-1) + partial_cost))
+    return;
+  else
+  {
+    if (m < n - 1)
+    {
+      //
+      // not yet at the end; try all possibilities for a[m]
+      //
+      for (int i = m; i < n; i++)
+      {
+#define swap(i, j) \
+  do               \
+  {                \
+    int t = max[i];  \
+    max[i] = max[j];   \
+    max[j] = t;      \
+  } while (0)
+        swap(i, m);                                                                              // exchange a[i] with a[m]
+        generate_all_permutations_branch_and_bound_max(n, m + 1, max, (partial_cost + cost[m][max[m]])); // recurse
+        swap(i, m);                                                                              // undo the exchange of a[i] with a[m]
+#undef swap
+      }
+    }
+    else // devido à recursividade, chega a uma altura que o m passa a ser igual ao n e portanto faz este else. Desta forma, vai correr todos os "a"s.
+    {
+      //
+      // visit the permutation (TODO: change this ...)
+      //
+      //printAssignment(n,a); //Apenas para debugging para conseguir perceber melhor o problema.
+
+      int custo = costAssignment(n, max); //Custo total
+
+      // Meter isto tudo simplificado numa função em que entre o custo e o a, p. ex definecost(custo,a)
+      if (custo > max_cost)
+      {
+        max_cost = custo;
+        for (int i = 0; i < n; i++)
+          max_cost_assignment[i] = max[i];
       }
 
       n_visited++;
@@ -565,14 +612,18 @@ int main(int argc, char **argv)
           {
             
             int a[n];
+            int max[n];
             for (int i = 0; i < n; i++)
               a[i] = i; // initial permutation
             reset_solutions();
             (void)elapsed_time();
             generate_all_permutations_branch_and_bound(n, 0, a, 0);
+            for (int i = 0; i < n; i++)
+              max[i] = i; // initial permutation
+            generate_all_permutations_branch_and_bound_max(n, 0, max, 0);
             cpu_time = elapsed_time();
             printf("%d\n",n);
-            show_solutions(n, "Brute force with branch-and-bound", show_info_2 | show_min_solution);
+            show_solutions(n, "Brute force with branch-and-bound", show_info_2 | show_min_solution | show_max_solution);
           }
         }
       }
