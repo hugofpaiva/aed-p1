@@ -76,6 +76,7 @@
 
 static int cost[max_n][max_n];
 static int seed; // place a student number here!
+static int min_init_cost;
 
 static void init_costs(int n)
 {
@@ -123,9 +124,17 @@ static void init_costs(int n)
   }
   assert(n >= 1 && n <= max_n);
   srandom((unsigned int)seed * (unsigned int)max_n + (unsigned int)n);
+  min_init_cost = cost[0][0];
   for (int a = 0; a < n; a++)
     for (int t = 0; t < n; t++)
+    {
       cost[a][t] = 3 + (random() % range) + (random() % range) + (random() % range); // [3,3*range]
+      if(cost[a][t]<min_init_cost)
+        min_init_cost=cost[a][t];
+    }
+
+
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -379,7 +388,7 @@ static void generate_all_permutations(int n, int m, int a[n]) // é introduzido 
 
 static void generate_all_permutations_branch_and_bound(int n, int m, int a[n], int partial_cost) // é introduzido um vetor a que vai de 0 até n
 {
-  if (min_cost < (3 * (n - m -1) + partial_cost))
+  if (min_cost < (min_init_cost * (n-m-1) + partial_cost))
     return;
   else
   {
