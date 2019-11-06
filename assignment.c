@@ -420,13 +420,13 @@ static void generate_all_permutations_branch_and_bound(int n, int m, int a[n], i
       //
       //printAssignment(n,a); //Apenas para debugging para conseguir perceber melhor o problema.
 
-      int custo = costAssignment(n, a); //Custo total
+      int cost = costAssignment(n, a); //Custo total
 
       // Meter isto tudo simplificado numa função em que entre o custo e o a, p. ex definecost(custo,a)
 
-      if (custo < min_cost)
+      if (cost < min_cost)
       {
-        min_cost = custo;
+        min_cost = cost;
         for (int i = 0; i < n; i++)
           min_cost_assignment[i] = a[i];
       }
