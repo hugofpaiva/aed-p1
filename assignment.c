@@ -326,15 +326,15 @@ void printAssignment(int n, int a[n])
 
 int costAssignment(int n, int a[n])
 {
-  int cost = 0;
+  int permutation_cost = 0;
 
   for (int i = 0; i < n; i++)
   {
-    cost += cost[i][a[i]];
+    permutation_cost += cost[i][a[i]];
   }
-  histogram[cost]++;
+  histogram[permutation_cost]++;
   //printf("Custo: %d \n",custo);
-  return cost;
+  return permutation_cost;
 }
 
 static void generate_all_permutations(int n, int m, int a[n]) // é introduzido um vetor a que vai de 0 até n
@@ -366,18 +366,18 @@ static void generate_all_permutations(int n, int m, int a[n]) // é introduzido 
     //
     //printAssignment(n,a); //Apenas para debugging para conseguir perceber melhor o problema.
 
-    int cost = costAssignment(n, a); //Custo total
+    int permutation_cost = costAssignment(n, a); //Custo total
 
-    if (cost > max_cost)
+    if (permutation_cost > max_cost)
     {
-      max_cost = cost;
+      max_cost = permutation_cost;
       for (int i = 0; i < n; i++)
         max_cost_assignment[i] = a[i];
     }
 
-    if (cost < min_cost)
+    if (permutation_cost < min_cost)
     {
-      min_cost = cost;
+      min_cost = permutation_cost;
       for (int i = 0; i < n; i++)
         min_cost_assignment[i] = a[i];
     }
@@ -389,7 +389,7 @@ static void generate_all_permutations(int n, int m, int a[n]) // é introduzido 
 
 static void generate_all_permutations_branch_and_bound(int n, int m, int a[n], int partial_cost) // é introduzido um vetor a que vai de 0 até n
 {
-  if (min_cost < (min_init_cost * (n - m) + partial_cost))
+  if (min_cost < (min_init_cost * (n - m ) + partial_cost))
     return;
   else
   {
@@ -400,17 +400,17 @@ static void generate_all_permutations_branch_and_bound(int n, int m, int a[n], i
       //
       for (int i = m; i < n; i++)
       {
-        #define swap(i, j) \
-          do               \
-          {                \
-            int t = a[i];  \
-            a[i] = a[j];   \
-            a[j] = t;      \
-          } while (0)
-          swap(i, m);                                                                              // exchange a[i] with a[m]
-          generate_all_permutations_branch_and_bound(n, m + 1, a, (partial_cost + cost[m][a[m]])); // recurse
-          swap(i, m);                                                                              // undo the exchange of a[i] with a[m]
-        #undef swap
+#define swap(i, j) \
+  do               \
+  {                \
+    int t = a[i];  \
+    a[i] = a[j];   \
+    a[j] = t;      \
+  } while (0)
+        swap(i, m);                                                                              // exchange a[i] with a[m]
+        generate_all_permutations_branch_and_bound(n, m + 1, a, (partial_cost + cost[m][a[m]])); // recurse
+        swap(i, m);                                                                              // undo the exchange of a[i] with a[m]
+#undef swap
       }
     }
     else // devido à recursividade, chega a uma altura que o m passa a ser igual ao n e portanto faz este else. Desta forma, vai correr todos os "a"s.
@@ -420,13 +420,13 @@ static void generate_all_permutations_branch_and_bound(int n, int m, int a[n], i
       //
       //printAssignment(n,a); //Apenas para debugging para conseguir perceber melhor o problema.
 
-      int cost = costAssignment(n, a); //Custo total
+      int permutation_cost = costAssignment(n, a); //Custo total
 
       // Meter isto tudo simplificado numa função em que entre o custo e o a, p. ex definecost(custo,a)
 
-      if (cost < min_cost)
+      if (permutation_cost < min_cost)
       {
-        min_cost = cost;
+        min_cost = permutation_cost;
         for (int i = 0; i < n; i++)
           min_cost_assignment[i] = a[i];
       }
@@ -470,12 +470,12 @@ static void generate_all_permutations_branch_and_bound_max(int n, int m, int a[n
       //
       //printAssignment(n,a); //Apenas para debugging para conseguir perceber melhor o problema.
 
-      int cost = costAssignment(n, a); //Custo total
+      int permutation_cost = costAssignment(n, a); //Custo total
 
       // Meter isto tudo simplificado numa função em que entre o custo e o a, p. ex definecost(custo,a)
-      if (cost > max_cost)
+      if (permutation_cost > max_cost)
       {
-        max_cost = cost;
+        max_cost = permutation_cost;
         for (int i = 0; i < n; i++)
           max_cost_assignment[i] = a[i];
       }
@@ -505,20 +505,20 @@ void random_permutation(int n, int t[n])
     t[j] = k;
   }
 
-  int cost = costAssignment(n, t); //Custo total
+  int permutation_cost = costAssignment(n, t); //Custo total
 
-  if (cost > max_cost)
+  if (permutation_cost > max_cost)
   {
-    max_cost = cost;
+    max_cost = permutation_cost;
     for (int i = 0; i < n; i++)
     {
       max_cost_assignment[i] = t[i];
     }
   }
 
-  if (cost < min_cost)
+  if (permutation_cost < min_cost)
   {
-    min_cost = cost;
+    min_cost = permutation_cost;
     for (int i = 0; i < n; i++)
       min_cost_assignment[i] = t[i];
   }
