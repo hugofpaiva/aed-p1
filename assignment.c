@@ -366,18 +366,18 @@ static void generate_all_permutations(int n, int m, int a[n]) // é introduzido 
     //
     //printAssignment(n,a); //Apenas para debugging para conseguir perceber melhor o problema.
 
-    int custo = costAssignment(n, a); //Custo total
+    int cost = costAssignment(n, a); //Custo total
 
-    if (custo > max_cost)
+    if (cost > max_cost)
     {
-      max_cost = custo;
+      max_cost = cost;
       for (int i = 0; i < n; i++)
         max_cost_assignment[i] = a[i];
     }
 
-    if (custo < min_cost)
+    if (cost < min_cost)
     {
-      min_cost = custo;
+      min_cost = cost;
       for (int i = 0; i < n; i++)
         min_cost_assignment[i] = a[i];
     }
@@ -389,7 +389,7 @@ static void generate_all_permutations(int n, int m, int a[n]) // é introduzido 
 
 static void generate_all_permutations_branch_and_bound(int n, int m, int a[n], int partial_cost) // é introduzido um vetor a que vai de 0 até n
 {
-  if (min_cost < (min_init_cost * (n - m ) + partial_cost))
+  if (min_cost < (min_init_cost * (n - m) + partial_cost))
     return;
   else
   {
@@ -400,17 +400,17 @@ static void generate_all_permutations_branch_and_bound(int n, int m, int a[n], i
       //
       for (int i = m; i < n; i++)
       {
-#define swap(i, j) \
-  do               \
-  {                \
-    int t = a[i];  \
-    a[i] = a[j];   \
-    a[j] = t;      \
-  } while (0)
-        swap(i, m);                                                                              // exchange a[i] with a[m]
-        generate_all_permutations_branch_and_bound(n, m + 1, a, (partial_cost + cost[m][a[m]])); // recurse
-        swap(i, m);                                                                              // undo the exchange of a[i] with a[m]
-#undef swap
+        #define swap(i, j) \
+          do               \
+          {                \
+            int t = a[i];  \
+            a[i] = a[j];   \
+            a[j] = t;      \
+          } while (0)
+          swap(i, m);                                                                              // exchange a[i] with a[m]
+          generate_all_permutations_branch_and_bound(n, m + 1, a, (partial_cost + cost[m][a[m]])); // recurse
+          swap(i, m);                                                                              // undo the exchange of a[i] with a[m]
+        #undef swap
       }
     }
     else // devido à recursividade, chega a uma altura que o m passa a ser igual ao n e portanto faz este else. Desta forma, vai correr todos os "a"s.
