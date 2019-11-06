@@ -326,15 +326,15 @@ void printAssignment(int n, int a[n])
 
 int costAssignment(int n, int a[n])
 {
-  int custo = 0;
+  int cost = 0;
 
   for (int i = 0; i < n; i++)
   {
-    custo += cost[i][a[i]];
+    cost += cost[i][a[i]];
   }
-  histogram[custo]++;
+  histogram[cost]++;
   //printf("Custo: %d \n",custo);
-  return custo;
+  return cost;
 }
 
 static void generate_all_permutations(int n, int m, int a[n]) // é introduzido um vetor a que vai de 0 até n
@@ -470,12 +470,12 @@ static void generate_all_permutations_branch_and_bound_max(int n, int m, int a[n
       //
       //printAssignment(n,a); //Apenas para debugging para conseguir perceber melhor o problema.
 
-      int custo = costAssignment(n, a); //Custo total
+      int cost = costAssignment(n, a); //Custo total
 
       // Meter isto tudo simplificado numa função em que entre o custo e o a, p. ex definecost(custo,a)
-      if (custo > max_cost)
+      if (cost > max_cost)
       {
-        max_cost = custo;
+        max_cost = cost;
         for (int i = 0; i < n; i++)
           max_cost_assignment[i] = a[i];
       }
@@ -505,20 +505,20 @@ void random_permutation(int n, int t[n])
     t[j] = k;
   }
 
-  int custo = costAssignment(n, t); //Custo total
+  int cost = costAssignment(n, t); //Custo total
 
-  if (custo > max_cost)
+  if (cost > max_cost)
   {
-    max_cost = custo;
+    max_cost = cost;
     for (int i = 0; i < n; i++)
     {
       max_cost_assignment[i] = t[i];
     }
   }
 
-  if (custo < min_cost)
+  if (cost < min_cost)
   {
-    min_cost = custo;
+    min_cost = cost;
     for (int i = 0; i < n; i++)
       min_cost_assignment[i] = t[i];
   }
