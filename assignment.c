@@ -2,9 +2,9 @@
 //
 // AED, 2019/2020
 //
-// TODO: 93195 Hugo Filipe Ribeiro Paiva de Almeida
-// TODO: 93019 José Lucas Sousa
-// TODO: 91153 João Laranjo
+//   93195 Hugo Filipe Ribeiro Paiva de Almeida
+//  93019 José Lucas Sousa
+//  91153 João Laranjo
 //
 // Brute-force solution of the assignment problem (https://en.wikipedia.org/wiki/Assignment_problem)
 //
@@ -50,7 +50,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
 //#define NDEBUG  // uncomment to skip disable asserts (makes the code slightly faster)
 #include <assert.h>
 
@@ -389,7 +388,7 @@ static void generate_all_permutations(int n, int m, int a[n]) // é introduzido 
 
 static void generate_all_permutations_branch_and_bound(int n, int m, int a[n], int partial_cost) // é introduzido um vetor a que vai de 0 até n
 {
-  if (min_cost < (min_init_cost * (n - m ) + partial_cost))
+  if (min_cost < (min_init_cost * (n - m) + partial_cost))
     return;
   else
   {
@@ -485,7 +484,32 @@ static void generate_all_permutations_branch_and_bound_max(int n, int m, int a[n
     }
   }
 }
+static void greedy_method(int n, int a[n])
+{
+  int binary_array_vertical[n];
+  int permutation_cost = costAssignment(n, a);
+  for (int i = 0; i < n; i++)
+  {
+    binary_array_vertical[i] = 0;
+  }
 
+  int l, c = n;
+  int element_cost = 0;
+  int first_element_cost, second_element_cost = 0;
+  for (int i = 0; i < l; i++)
+  {
+    printf("%d -------- \n", cost[l][0]);
+    for (int i = 0; i < c; i++)
+    {
+      first_element_cost = cost[l][c];
+      second_element_cost = cost[l][c + 1];
+      if (first_element_cost < second_element_cost)
+      {
+        
+      }
+    }
+  }
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // function to generate a pseudo-random permutation
@@ -540,9 +564,12 @@ int main(int argc, char **argv)
       int a[n];
       for (int i = 0; i < n; i++)
         a[i] = i;
+
       reset_solutions();
       (void)elapsed_time();
       generate_all_permutations(n, 0, a);
+      printf("metodo greedy ----------\n");
+      greedy_method(n, a);
       cpu_time = elapsed_time();
       show_solutions(n, "Example for n=3", show_all);
       printf("\n");
