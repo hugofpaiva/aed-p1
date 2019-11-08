@@ -487,14 +487,18 @@ static void generate_all_permutations_branch_and_bound_max(int n, int m, int a[n
 static void greedy_method(int n, int a[n])
 {
   int binary_array_vertical[n];
+  int binary_array_horizontal[n];
   for (int i = 0; i < n; i++)
   {
     binary_array_vertical[i] = 0;
+    binary_array_horizontal[i] = 0;
   }
 
   int l, c = n;
   int element_cost = 0;
   int first_element_cost, second_element_cost = 0;
+  int col_pos = c;
+  int line_pos = l;
   for (int i = 0; i < l; i++)
   {
     printf("%d -------- \n", cost[l][0]);
@@ -505,12 +509,18 @@ static void greedy_method(int n, int a[n])
       if (first_element_cost < second_element_cost)
       {
         min_cost = first_element_cost;
+        col_pos = c;
+        line_pos = l;
       }
       else
       {
         min_cost = second_element_cost;
+        col_pos = c;
+        line_pos = l;
       }
     }
+    binary_array_vertical[line_pos] = 1;
+    binary_array_vertical[col_pos] = 1;
   }
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
