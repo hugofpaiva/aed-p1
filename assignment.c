@@ -495,15 +495,19 @@ static void greedy_method(int n, int a[n])
   }
 
   int l, c = n;
-  int element_cost = 0;
+  int final_cost = 0;
   int first_element_cost, second_element_cost = 0;
   int col_pos = c;
   int line_pos = l;
+
   for (int i = 0; i < l; i++)
   {
     printf("%d -------- \n", cost[l][0]);
     for (int i = 0; i < c - 1; i++)
     {
+      if (binary_array_vertical[l] == 1 && binary_array_horizontal[l] == 1)
+        break;
+
       first_element_cost = cost[l][c];
       second_element_cost = cost[l][c + 1];
       if (first_element_cost < second_element_cost)
@@ -519,6 +523,7 @@ static void greedy_method(int n, int a[n])
         line_pos = l;
       }
     }
+    final_cost += min_cost;
     binary_array_vertical[line_pos] = 1;
     binary_array_vertical[col_pos] = 1;
   }
