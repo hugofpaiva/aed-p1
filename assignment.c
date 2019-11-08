@@ -487,7 +487,6 @@ static void generate_all_permutations_branch_and_bound_max(int n, int m, int a[n
 static void greedy_method(int n, int a[n])
 {
   int binary_array_vertical[n];
-  int permutation_cost = costAssignment(n, a);
   for (int i = 0; i < n; i++)
   {
     binary_array_vertical[i] = 0;
@@ -499,13 +498,17 @@ static void greedy_method(int n, int a[n])
   for (int i = 0; i < l; i++)
   {
     printf("%d -------- \n", cost[l][0]);
-    for (int i = 0; i < c; i++)
+    for (int i = 0; i < c - 1; i++)
     {
       first_element_cost = cost[l][c];
       second_element_cost = cost[l][c + 1];
       if (first_element_cost < second_element_cost)
       {
-        
+        min_cost = first_element_cost;
+      }
+      else
+      {
+        min_cost = second_element_cost;
       }
     }
   }
