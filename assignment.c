@@ -673,11 +673,20 @@ int main(int argc, char **argv)
       seed = atoi(argv[2]); // seed = student number
       if (seed >= 0 && seed <= 1000000)
       {
-        printf("metodo greedy ----------\n");
+        int n = 3;
+        init_costs(-3); // costs for the example with n = 3
+        int a[n];
+        for (int i = 0; i < n; i++)
+          a[i] = i;
+
+        reset_solutions();
+        (void)elapsed_time();
         greedy_method(n, a);
+        cpu_time = elapsed_time();
+        show_solutions(n, "Greedy for n=3", show_all);
+        return 0;
       }
     }
-
   }
   if (argc == 6)
   {
