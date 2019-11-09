@@ -494,33 +494,33 @@ static void greedy_method(int n, int a[n])
     binary_array_horizontal[i] = 0;
   }
 
-  int l, c = n;
+  int line, column = n;
   int final_cost = 0;
   int first_element_cost, second_element_cost = 0;
-  int col_pos = c;
-  int line_pos = l;
+  int col_pos = column;
+  int line_pos = line;
 
-  for (int i = 0; i < l; i++)
+  for (int i = 0; i < line; i++)
   {
-    printf("%d -------- \n", cost[l][0]);
-    for (int i = 0; i < c - 1; i++)
+    printf("%d -------- \n", cost[line][0]);
+    for (int i = 0; i < column - 1; i++)
     {
-      if (binary_array_vertical[l] == 1 && binary_array_horizontal[l] == 1)
+      if (binary_array_vertical[line] == 1 && binary_array_horizontal[line] == 1)
         break;
 
-      first_element_cost = cost[l][c];
-      second_element_cost = cost[l][c + 1];
+      first_element_cost = cost[line][column];
+      second_element_cost = cost[line][column + 1];
       if (first_element_cost < second_element_cost)
       {
         min_cost = first_element_cost;
-        col_pos = c;
-        line_pos = l;
+        col_pos = column;
+        line_pos = line;
       }
       else
       {
         min_cost = second_element_cost;
-        col_pos = c;
-        line_pos = l;
+        col_pos = column;
+        line_pos = line;
       }
     }
     final_cost += min_cost;
@@ -673,17 +673,33 @@ int main(int argc, char **argv)
       seed = atoi(argv[2]); // seed = student number
       if (seed >= 0 && seed <= 1000000)
       {
-        int n = 3;
-        init_costs(-3); // costs for the example with n = 3
-        int a[n];
-        for (int i = 0; i < n; i++)
-          a[i] = i;
+        for (int n = 32; n > 16; n--)
+        {
+          init_costs(n);
+          int a[n];
+          for (int i = 0; i < n; i++)
+            a[i] = i;
 
-        reset_solutions();
-        (void)elapsed_time();
-        greedy_method(n, a);
-        cpu_time = elapsed_time();
-        show_solutions(n, "Greedy for n=3", show_all);
+          reset_solutions();
+          (void)elapsed_time();
+          greedy_method(n, a);
+          cpu_time = elapsed_time();
+          show_solutions(n, "Greedy", show_all);
+        }
+        for (int n = 16; n > 0; n--)
+        {
+          init_costs(n);
+          int a[n];
+          for (int i = 0; i < n; i++)
+            a[i] = i;
+
+          reset_solutions();
+          (void)elapsed_time();
+          greedy_method(n, a);
+          cpu_time = elapsed_time();
+          show_solutions(n, "Greedy", show_all);
+        }
+        printf("\n");
         return 0;
       }
     }
