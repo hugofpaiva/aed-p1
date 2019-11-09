@@ -604,6 +604,12 @@ int main(int argc, char **argv)
       return 0;
     }
   }
+
+  if (argc == 2 && argv[1][0] == '-' && argv[1][1] == 'a')
+  {
+    //Correr todas as funções
+  }
+
   if (argc == 3)
   {
     if (argv[1][0] == '-' && argv[1][1] == 'f')
@@ -673,7 +679,7 @@ int main(int argc, char **argv)
       seed = atoi(argv[2]); // seed = student number
       if (seed >= 0 && seed <= 1000000)
       {
-        for (int n = 32; n > 16; n--)
+        for (int n = 32; n > 16; n--) // Correr o método greedy
         {
           init_costs(n);
           int a[n];
@@ -686,18 +692,17 @@ int main(int argc, char **argv)
           cpu_time = elapsed_time();
           show_solutions(n, "Greedy", show_all);
         }
-        for (int n = 16; n > 0; n--)
+        for (int n = 16; n > 0; n--) //Como nestes n's o Brute Force é rápido, usamos os métodos de Brute Force para calcular, como p/exemplo o branch and bound
         {
-          init_costs(n);
           int a[n];
           for (int i = 0; i < n; i++)
-            a[i] = i;
-
+            a[i] = i; // initial permutation
           reset_solutions();
           (void)elapsed_time();
-          greedy_method(n, a);
+          generate_all_permutations_branch_and_bound(n, 0, a, 0);
           cpu_time = elapsed_time();
-          show_solutions(n, "Greedy", show_all);
+          printf("%d\n", n);
+          show_solutions(n, "Brute force with branch-and-bound", show_info_2 | show_min_solution);
         }
         printf("\n");
         return 0;
@@ -721,7 +726,6 @@ int main(int argc, char **argv)
             show_solutions(n, "Problem statement", show_info_1 | show_costs);
             reset_solutions();
             (void)elapsed_time();
-            //pow(10,6)
             for (int z = 1; z <= N; z++)
             {
               iterations++;
