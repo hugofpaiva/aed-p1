@@ -2,7 +2,7 @@
 //
 // AED, 2019/2020
 //
-//   93195 Hugo Filipe Ribeiro Paiva de Almeida
+//  93195 Hugo Filipe Ribeiro Paiva de Almeida
 //  93019 José Lucas Sousa
 //  91153 João Laranjo
 //
@@ -586,8 +586,6 @@ int main(int argc, char **argv)
       reset_solutions();
       (void)elapsed_time();
       generate_all_permutations(n, 0, a);
-      printf("metodo greedy ----------\n");
-      greedy_method(n, a);
       cpu_time = elapsed_time();
       show_solutions(n, "Example for n=3", show_all);
       printf("\n");
@@ -669,6 +667,17 @@ int main(int argc, char **argv)
       printf("\n");
       return 0;
     }
+
+    if (argv[1][0] == '-' && argv[1][1] == 'g')
+    {
+      seed = atoi(argv[2]); // seed = student number
+      if (seed >= 0 && seed <= 1000000)
+      {
+        printf("metodo greedy ----------\n");
+        greedy_method(n, a);
+      }
+    }
+
   }
   if (argc == 6)
   {
