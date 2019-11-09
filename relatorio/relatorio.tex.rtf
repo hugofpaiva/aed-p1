@@ -110,14 +110,44 @@
 \\clearpage\
 \
 \\section\{Introduction\}\
-    In this report we will approach how we can assign n agents (a) to n tasks (t) such that the total cost (\\textbf\{C\}a,t) of assignment is minimized. The matrix of costs is always randomly generated thus the minimum cost can change with every execution independently of the n number of agents/tasks.\
+    In this report we will approach how we can assign n agents (a) to n tasks (t) such that the total cost (\\textbf\{C\}a,t) of assignment is minimized. The matrix of costs is always randomly generated, depending on a seed, thus the minimum cost can change with every execution independently of the n number of agents/tasks.\
+    \
+    \\subsection\{Getting Started\}\
+        These instructions will help to compile and run developed programs on your local machine.\
+    \\subsection\{Prerequisites\}\
+        To compile programs, it is necessary to have a C compiler installed on yor local machine, for example cc.\
+\
+    \\subsection\{Compiling\}\
+        The following command compiles assignment program (assignment.c) where \\verb|<executable_filename>| will be the executable filename:\
+        \\lstset\{backgroundcolor=\\color\{light-gray\}\}\
+        \\begin\{lstlisting\}[frame=single]\
+            cc -Wall -O2 assignment.c -o <executable_filename> -lm\
+        \\end\{lstlisting\}\
+    \\subsection\{Running\}\
+        Options:\
+        \\lstset\{backgroundcolor=\\color\{light-gray\}\}\
+        \\begin\{lstlisting\}[frame=single]\
+    -e ........................ for n=3 and n=5 using Brute Force strategy;\
+    \
+    -f <seed> ................. uses Brute Force strategy with specified \
+                                Seed value;\
+    \
+    -b <seed> ................. uses Branch and Bound strategy with specified \
+                                Seed value;\
+    -r <seed> <seed> <seed> <N>	uses Brute Force strategy with Random \
+                                Permutations generated N times and three \
+                                specified Seed value\
+        \\end\{lstlisting\}\
+\
+\\clearpage\
 \
 \\section\{Methods of Implementation\}\
 \
 % A * after the section/chapter command indicates an unnumbered header which will not be added to the table of contents\
 \\subsection\{Brute Force Method\}\
 \
-The Brute Force Method consists in finding all the permutations of agents and tasks and for each permutation calculate the estimated cost through the Matrix of Costs.\\\\\
+The Brute Force Method consists in computing all the permutations of agents and tasks and for each permutation calculate the estimated cost through the Matrix of Costs.\\\\\\\\\
+Despite being a simple method to implement the BF search is a very exhaustive method, thus it's time consuming.\
 \
 Let:\
 \\begin\{itemize\}  \
@@ -129,24 +159,52 @@ Let:\
 \
 \\lstset\{backgroundcolor=\\color\{light-gray\}\}\
 \\begin\{lstlisting\}[frame=single]\
+int costAssignment(int n, int a[n])\{\
+  int permutation_cost = 0;\
+  for (int i = 0; i < n; i++)\{\
+    permutation_cost += cost[i][a[i]];\
+  \}\
+  histogram[permutation_cost]++;\
+  return permutation_cost;\
+\}\
+\
 static void generate_all_permutations(int n,int m,int a[n])\
 \{\
 ...\
-    for (int i = 0; i < n; i++) \
-        \{\
-            permutation_cost += cost[i][a[i]]; \
-        \}\
-        if(permutation_cost > max_cost)\
-        \{\
-          max_cost = permutation_cost;\
-        \}  \
-        if(permutation_cost < min_cost)\
-        \{\
-          min_cost = permutation_cost;\
-        \}  \
+    int permutation_cost = costAssignment(n,a);\
+    if (permutation_cost > max_cost)\{\
+        max_cost = permutation_cost;\
+        for (int i = 0; i < n; i++)\
+            max_cost_assignment[i] = a[i];\
+    \}  \
+    if (permutation_cost < min_cost)\{\
+        min_cost = permutation_cost;\
+        for (int i = 0; i < n; i++)\
+            min_cost_assignment[i] = a[i];\
+    \}  \
 ...\
 \}\
+\
 \\end\{lstlisting\}\
+\
+\\clearpage\
+\\subsection\{The Random Permutation Method\}\
+    The Random Permutation Method consists in computing a large\\footnote\{By a 'large' number we mean a number like 1e6;\}  number of permutations of size 'n' and calculating the minimum and maximum cost for those computed permutations.\\\\\\\\ Once the computed number of permutations far exceeds the number of different permutations \\footnote\{i.e 10! > 1e6;\} the minimum and maximum cost are going to be an approximation of the real costs because not all possibilities are able to be computed.\
+    \\lstset\{backgroundcolor=\\color\{light-gray\}\}\\\\\\\\\
+    This method is, almost always, faster than the Brute-Force method.\
+\\begin\{lstlisting\}[frame=single]\
+\
+\\end\{lstlisting\}\
+    \
+\\clearpage\
+\
+\\subsection\{The Branch-and-Bound Method\}\
+    The Branch-and-Bound method consists in computing the cost of a permutation of n agents and if its cost is larger than the minimum cost of a previous permutation it immediately discards the current permutation and moves on to the next one.\
+    \
+    \\begin\{lstlisting\}[frame=single]\
+\
+    \\end\{lstlisting\}\
+\
 \
 \
 \\end\{document\}\
