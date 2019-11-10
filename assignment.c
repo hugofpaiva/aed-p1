@@ -486,45 +486,53 @@ static void generate_all_permutations_branch_and_bound_max(int n, int m, int a[n
 }
 static void greedy_method(int n, int a[n])
 {
+
   int binary_array[n];
   memset(binary_array, 0, n * sizeof(int));
 
-  int line = n;
-  int column = n;
+  int tmp_min_cost = 1000000;
   int final_min_cost = 0;
-  int array_pos = 0;
   printf("\n");
-  for (int l = 0; l < n; l++)
+  int c_pos = 0;
+  for (int l = 0; l < n; l++) // line
   {
-    printf("l = %d\n", l);
-    for (int c = 0; c < n; c++)
+    printf("\n---------NEW LINE-------\n");
+    for (int c = 0; c < n - 1; c++) // column
     {
-      printf("c = %d\n", c);
-
       if (binary_array[c] == 1)
-        break;
-
-      if (cost[l][c] < cost[l][c + 1])
       {
-        min_cost = cost[l][c];
-        binary_array[c] = 1;
+        printf("encontrou um 1\n");
+        continue;
       }
-      else
+      if (cost[l][c] <= cost[l][c + 1] && cost[l][c] <= tmp_min_cost && binary_array[c] == 0)
       {
-        min_cost = cost[l][c + 1];
-        binary_array[c] = 1;
+        printf("1º if--------\n");
+        tmp_min_cost = cost[l][c];
+        c_pos = c;
+        continue;
       }
+      if (cost[l][c] >= cost[l][c + 1] && cost[l][c + 1] <= tmp_min_cost)
+      {
+        printf("2º if--------\n");
+        if (binary_array[c + 1] == 0)
+        {
+          tmp_min_cost = cost[l][c + 1];
+          c_pos = c + 1;
+          continue;
+        }
+        continue;
+      }
+      printf("l: %d, c: %d, cost[l][c] -- %d\n", l, c, cost[l][c]);
+      printf("l: %d, c+1: %d, cost[l][c+1] -- %d\n", l, c + 1, cost[l][c + 1]);
     }
-    printf("custo minimo do for : %d\n  ", final_min_cost);
-    final_min_cost += min_cost;
+    binary_array[c_pos] = 1;
+    final_min_cost += tmp_min_cost;
+    printf("final_min_cost : %d\n  ", final_min_cost);
+    printf("tmp_min_cost : %d\n  ", tmp_min_cost);
+    tmp_min_cost = 1000000;
   }
-  for (int i = 0; i < n; i++)
-  {
-    printf(" array : %d\n", binary_array[i]);
-  }
-
-  printf("CUSTO FINAL %d\n", final_min_cost);
 }
+
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // function to generate a pseudo-random permutation
@@ -598,6 +606,8 @@ int main(int argc, char **argv)
       reset_solutions();
       (void)elapsed_time();
       generate_all_permutations(n, 0, a);
+      printf("GREEDY METHOD");
+      greedy_method(n, a);
       cpu_time = elapsed_time();
       show_solutions(n, "Example for n=5", show_all);
       return 0;
