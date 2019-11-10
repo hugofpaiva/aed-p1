@@ -487,37 +487,43 @@ static void generate_all_permutations_branch_and_bound_max(int n, int m, int a[n
 static void greedy_method(int n, int a[n])
 {
   int binary_array[n];
-  memset(binary_array, 0, 20 * sizeof(int));
+  memset(binary_array, 0, n * sizeof(int));
 
-  int line, column = n;
-  int final_cost = 0;
-  int col_pos = column;
-  int line_pos = line;
-
-  for (int i = 0; i < line; i++)
+  int line = n;
+  int column = n;
+  int final_min_cost = 0;
+  int array_pos = 0;
+  printf("\n");
+  for (int l = 0; l < n; l++)
   {
-    printf("%d -------- \n", cost[line][0]);
-    for (int i = 0; i < column - 1; i++)
+    printf("l = %d\n", l);
+    for (int c = 0; c < n; c++)
     {
-      if (binary_array[line] == 1 )
+      printf("c = %d\n", c);
+
+      if (binary_array[c] == 1)
         break;
 
-      if (cost[line][column] < cost[line][column + 1])
+      if (cost[l][c] < cost[l][c + 1])
       {
-        min_cost = cost[line][column];
-        col_pos = column;
-        line_pos = line;
+        min_cost = cost[l][c];
+        binary_array[c] = 1;
       }
       else
       {
-        min_cost = cost[line][column + 1];
-        col_pos = column;
-        line_pos = line;
+        min_cost = cost[l][c + 1];
+        binary_array[c] = 1;
       }
     }
-    final_cost += min_cost;
-    binary_array[line_pos] = 1;
+    printf("custo minimo do for : %d\n  ", final_min_cost);
+    final_min_cost += min_cost;
   }
+  for (int i = 0; i < n; i++)
+  {
+    printf(" array : %d\n", binary_array[i]);
+  }
+
+  printf("CUSTO FINAL %d\n", final_min_cost);
 }
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -577,6 +583,8 @@ int main(int argc, char **argv)
       reset_solutions();
       (void)elapsed_time();
       generate_all_permutations(n, 0, a);
+      printf("GREEDY METHOD");
+      greedy_method(n, a);
       cpu_time = elapsed_time();
       show_solutions(n, "Example for n=3", show_all);
       printf("\n");
