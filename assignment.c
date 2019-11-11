@@ -486,34 +486,36 @@ static void generate_all_permutations_branch_and_bound_max(int n, int m, int a[n
 }
 static void greedy_method(int n, int a[n])
 {
-
+  // x is the number of the iteration in wich we start to use the Brute Force Method (as suggested by professor Tomás)
+  int k = (int)(0.25 * n < 0 ? (0.25 * n - 0.5) : (0.25 * n + 0.5)); // k is equivalent to 25 % of the matrix
+  int x = n - k;
+  // Declaration of the binary array that holds the possibility of using a column (0) or not (1)
   int binary_array[n];
   memset(binary_array, 0, n * sizeof(int));
-
+  // Other Variables
   int tmp_min_cost = 1000000;
-  int final_min_cost = 0;
-  printf("\n");
-  int c_pos = 0;
+  int final_min_cost = 0; // variable that hold the value of the cost using the Greedy Method (and Brute Force for the last k lines)
+  int c_pos = 0;          // holds the position of the column that has the minimum cost. It is used to update 'binary_array'
+  int permutation_cost = 0;
   for (int l = 0; l < n; l++) // line
   {
-    printf("\n---------NEW LINE-------\n");
     for (int c = 0; c < n - 1; c++) // column
     {
+
       if (binary_array[c] == 1)
       {
-        printf("encontrou um 1\n");
         continue;
       }
+
       if (cost[l][c] <= cost[l][c + 1] && cost[l][c] <= tmp_min_cost && binary_array[c] == 0)
       {
-        printf("1º if--------\n");
         tmp_min_cost = cost[l][c];
         c_pos = c;
         continue;
       }
+
       if (cost[l][c] >= cost[l][c + 1] && cost[l][c + 1] <= tmp_min_cost)
       {
-        printf("2º if--------\n");
         if (binary_array[c + 1] == 0)
         {
           tmp_min_cost = cost[l][c + 1];
@@ -522,13 +524,10 @@ static void greedy_method(int n, int a[n])
         }
         continue;
       }
-      printf("l: %d, c: %d, cost[l][c] -- %d\n", l, c, cost[l][c]);
-      printf("l: %d, c+1: %d, cost[l][c+1] -- %d\n", l, c + 1, cost[l][c + 1]);
     }
     binary_array[c_pos] = 1;
     final_min_cost += tmp_min_cost;
-    printf("final_min_cost : %d\n  ", final_min_cost);
-    printf("tmp_min_cost : %d\n  ", tmp_min_cost);
+
     tmp_min_cost = 1000000;
   }
 }
