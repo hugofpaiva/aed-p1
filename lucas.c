@@ -380,7 +380,6 @@ static void generate_all_permutations(int n, int m, int a[n]) // é introduzido 
             for (int i = 0; i < n; i++)
                 min_cost_assignment[i] = a[i];
         }
-        printf("MIN COST ASSIGNMENT MATRIX KxK =========== %d", min_cost);
         n_visited++;
         // place your code to update the best and worst solutions, and to update the histogram here
     }
