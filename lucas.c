@@ -486,36 +486,23 @@ static void generate_all_permutations_branch_and_bound_max(int n, int m, int a[n
 }
 static void greedy_method(int n, int a[n])
 {
-    // x is the number of the iteration in wich we start to use the Brute Force Method (as suggested by professor Tomás)
-    int k = (int)(0.25 * n < 0 ? (0.25 * n - 0.5) : (0.25 * n + 0.5)); // k is equivalent to 25 % of the matrix
-    int x = n - k;
 
     // Declaration of the binary array that holds the possibility of using a column (0) or not (1)
     int binary_array[n];
     memset(binary_array, 0, n * sizeof(int));
 
-    // Declaration of matrix with size k x k
-    int matrix[k][k];
+    
 
     int tmp_min_cost = 1000000;
     int final_min_cost = 0; // variable that hold the value of the cost using the Greedy Method (and Brute Force for the last k lines)
     int c_pos = 0;          // holds the position of the column that has the minimum cost. It is used to update 'binary_array'
-    int permutation_cost = 0;
 
-    for (int i = 0; i < k; i++) // isto vai fazer varias versoes com diferentes valores de k e vamos comparar os tempos de run e verificar ate que valor de k compensa fazer o brute force
-    {
+    
         for (int l = 0; l < n; l++) // line
         {
             for (int c = 0; c < n - 1; c++) // column
             {
-                if (l >= x) // Starts Brute Force from here untill the end
-                {
-                    // matriz nova vai ser k x k
-                    if (binary_array[c] == 0)
-                    {
-                        matrix[i][c] = cost[l][c];
-                    }
-                }
+                
                 if (binary_array[c] == 1)
                 {
                     continue;
@@ -542,10 +529,11 @@ static void greedy_method(int n, int a[n])
 
             tmp_min_cost = 1000000;
         }
+        min_cost = final_min_cost;
 
-        generate_all_permutations(k, 0, matrix[k][k]);
-    }
+        
 }
+
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
@@ -604,7 +592,7 @@ int main(int argc, char **argv)
 
             reset_solutions();
             (void)elapsed_time();
-            generate_all_permutations(n, 0, a);
+            //generate_all_permutations(n, 0, a);
             printf("GREEDY METHOD");
             greedy_method(n, a);
             cpu_time = elapsed_time();
@@ -619,7 +607,7 @@ int main(int argc, char **argv)
                 a[i] = i;
             reset_solutions();
             (void)elapsed_time();
-            generate_all_permutations(n, 0, a);
+            //generate_all_permutations(n, 0, a);
             printf("GREEDY METHOD");
             greedy_method(n, a);
             cpu_time = elapsed_time();
