@@ -326,10 +326,15 @@ static void generate_all_permutations(int n,int m,int a[n])
         min_cost_assignment[i] = a[i];
       }
     }
-    
+
     n_visited++;
     // place your code to update the best and worst solutions, and to update the histogram here
   }
+}
+
+
+static void generate_all_permutations_branch_and_bound(int n, int m, int a[n], int pCost){
+  
 }
 
 
