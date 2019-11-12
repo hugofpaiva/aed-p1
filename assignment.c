@@ -231,71 +231,67 @@ static void reset_solutions(void)
 #define show_histogram (1 << 5)
 #define show_all (0xFFFF)
 
-static void show_solutions(int n, char *header, int what_to_show)
-{
+static void show_solutions(int n, char *header, int what_to_show){
+
   printf("%s\n", header);
-  if ((what_to_show & show_info_1) != 0)
-  {
+  if ((what_to_show & show_info_1) != 0){
     printf("  seed .......... %d\n", seed);
     printf("  n ............. %d\n", n);
   }
-  if ((what_to_show & show_info_2) != 0)
-  {
+
+  if ((what_to_show & show_info_2) != 0){
     printf("  visited ....... %ld\n", n_visited);
     printf("  cpu time ...... %.3fs\n", cpu_time);
   }
-  if ((what_to_show & show_costs) != 0)
-  {
-    printf("  costs .........");
-    for (int a = 0; a < n; a++)
-    {
-      for (int t = 0; t < n; t++)
-        printf(" %2d", cost[a][t]);
+
+  if ((what_to_show & show_costs) != 0){
+  	printf("  costs .........");
+    for (int a = 0; a < n; a++){
+    	for (int t = 0; t < n; t++){
+    		printf(" %2d", cost[a][t]);
+    	}
       printf("\n%s", (a < n - 1) ? "                 " : "");
     }
   }
-  if ((what_to_show & show_min_solution) != 0)
-  {
-    printf("  min cost ...... %d\n", min_cost);
-    if (min_cost != plus_inf)
-    {
-      printf("  assignement ...");
-      for (int i = 0; i < n; i++)
-        printf(" %d", min_cost_assignment[i]);
-      printf("\n");
-    }
-  }
-  if ((what_to_show & show_max_solution) != 0)
-  {
-    printf("  max cost ...... %d\n", max_cost);
-    if (max_cost != minus_inf)
-    {
-      printf("  assignement ...");
-      for (int i = 0; i < n; i++)
-        printf(" %d", max_cost_assignment[i]);
-      printf("\n");
-    }
-  }
-  if ((what_to_show & show_histogram) != 0)
-  {
-    // place your code to print the histogram here
 
-     //start with base filename
+  if ((what_to_show & show_min_solution) != 0){
+    printf("  min cost ...... %d\n", min_cost);
+    if (min_cost != plus_inf){
+      printf("  assignement ...");
+      for (int i = 0; i < n; i++){
+      	printf(" %d", min_cost_assignment[i]);
+      }
+      printf("\n");
+    }
+  }
+
+  if ((what_to_show & show_max_solution) != 0){
+    printf("  max cost ...... %d\n", max_cost);
+    if (max_cost != minus_inf){
+      printf("  assignement ...");
+      for (int i = 0; i < n; i++){
+      	printf(" %d", max_cost_assignment[i]);
+      }
+      printf("\n");
+    }
+  }
+
+  if ((what_to_show & show_histogram) != 0){
+  	//start with base filename
     char baseFilename[] = "data/result";
     //place to store final final name
     const int maxSize = 50;
     char filename[maxSize];
 
-    sprintf(filename, "%s_%d.txt", baseFilename, n);
-    printf("AQUI %s", filename);
+    sprintf(filename, "%s_%d.txt", baseFilename, seed);
 
-    FILE *f = fopen(filename, "w");
+    FILE *f = fopen(filename, "a+");
     if (f == NULL){
       printf("Erro a abrir o ficheiro!\n");
       exit(1);
     }
     else{
-      fprintf(f, "%d", n);
+    	fprintf(f, "%d\t\t%d\t\t%ld\t\t%.3f\t\t\t%d\t\t\t%d\n", seed, n, n_visited, cpu_time, min_cost, max_cost);
     }
 
     for (int i = 0; i < max_n * t_range; i++){
@@ -319,20 +315,17 @@ static void show_solutions(int n, char *header, int what_to_show)
 // TODO: modify the following function to solve the assignment problem
 //
 
-void printAssignment(int n, int a[n])
-{
+void printAssignment(int n, int a[n]){
   printf("  assignment ...");
   for (int i = 0; i < n; i++)
     printf(" %d", a[i]);
   printf("\n");
 }
 
-int costAssignment(int n, int a[n])
-{
+int costAssignment(int n, int a[n]){
   int permutation_cost = 0;
 
-  for (int i = 0; i < n; i++)
-  {
+  for (int i = 0; i < n; i++){
     permutation_cost += cost[i][a[i]];
   }
   histogram[permutation_cost]++;
@@ -340,18 +333,11 @@ int costAssignment(int n, int a[n])
   return permutation_cost;
 }
 
-static void generate_all_permutations(int n, int m, int a[n]) // é introduzido um vetor a que vai de 0 até n
-{
-  if (m < n - 1)
-  {
-    //
-    // not yet at the end; try all possibilities for a[m]
-    //
-    for (int i = m; i < n; i++)
-    {
+static void generate_all_permutations(int n, int m, int a[n]){ // é introduzido um vetor a que vai de 0 até n
+	if (m < n - 1){
+		for (int i = m; i < n; i++){
 #define swap(i, j) \
-  do               \
-  {                \
+  do{              \
     int t = a[i];  \
     a[i] = a[j];   \
     a[j] = t;      \
@@ -360,10 +346,10 @@ static void generate_all_permutations(int n, int m, int a[n]) // é introduzido 
       generate_all_permutations(n, m + 1, a); // recurse
       swap(i, m);                             // undo the exchange of a[i] with a[m]
 #undef swap
-    }
-  }
-  else // devido à recursividade, chega a uma altura que o m passa a ser igual ao n e portanto faz este else. Desta forma, vai correr todos os "a"s.
-  {
+  		}
+  	}
+  else {
+  	// devido à recursividade, chega a uma altura que o m passa a ser igual ao n e portanto faz este else. Desta forma, vai correr todos os "a"s.
     //
     // visit the permutation (TODO: change this ...)
     //
@@ -371,42 +357,37 @@ static void generate_all_permutations(int n, int m, int a[n]) // é introduzido 
 
     int permutation_cost = costAssignment(n, a); //Custo total
 
-    if (permutation_cost > max_cost)
-    {
+    if (permutation_cost > max_cost){
       max_cost = permutation_cost;
       for (int i = 0; i < n; i++)
         max_cost_assignment[i] = a[i];
     }
 
-    if (permutation_cost < min_cost)
-    {
+    if (permutation_cost < min_cost){
       min_cost = permutation_cost;
       for (int i = 0; i < n; i++)
         min_cost_assignment[i] = a[i];
     }
 
     n_visited++;
+
     // place your code to update the best and worst solutions, and to update the histogram here
-  }
+    }
 }
 
-static void generate_all_permutations_branch_and_bound(int n, int m, int a[n], int partial_cost) // é introduzido um vetor a que vai de 0 até n
-{
-  if (min_cost < (min_init_cost * (n - m) + partial_cost))
-    return;
-  else
-  {
-    if (m < n - 1)
-    {
-      //
-      // not yet at the end; try all possibilities for a[m]
-      //
-      for (int i = m; i < n; i++)
-      {
+static void generate_all_permutations_branch_and_bound(int n, int m, int a[n], int partial_cost){ // é introduzido um vetor a que vai de 0 até n
+	if (min_cost < (min_init_cost * (n - m) + partial_cost)){
+		return;
+	}
+	else{
+    	if (m < n - 1){
+      		//
+      		// not yet at the end; try all possibilities for a[m]
+      		//
+      		for (int i = m; i < n; i++){
 #define swap(i, j) \
-  do               \
-  {                \
-    int t = a[i];  \
+  do{              \
+  	int t = a[i];  \
     a[i] = a[j];   \
     a[j] = t;      \
   } while (0)
@@ -414,30 +395,28 @@ static void generate_all_permutations_branch_and_bound(int n, int m, int a[n], i
         generate_all_permutations_branch_and_bound(n, m + 1, a, (partial_cost + cost[m][a[m]])); // recurse
         swap(i, m);                                                                              // undo the exchange of a[i] with a[m]
 #undef swap
-      }
-    }
-    else // devido à recursividade, chega a uma altura que o m passa a ser igual ao n e portanto faz este else. Desta forma, vai correr todos os "a"s.
-    {
-      //
-      // visit the permutation (TODO: change this ...)
-      //
-      //printAssignment(n,a); //Apenas para debugging para conseguir perceber melhor o problema.
+    		}
+    	}
+    	else {// devido à recursividade, chega a uma altura que o m passa a ser igual ao n e portanto faz este else. Desta forma, vai correr todos os "a"s.
 
-      int permutation_cost = costAssignment(n, a); //Custo total
+      		//
+      		// visit the permutation (TODO: change this ...)
+      		//
+      		//printAssignment(n,a); //Apenas para debugging para conseguir perceber melhor o problema.
+      		int permutation_cost = costAssignment(n, a); //Custo total
 
-      // Meter isto tudo simplificado numa função em que entre o custo e o a, p. ex definecost(custo,a)
+      		// Meter isto tudo simplificado numa função em que entre o custo e o a, p. ex definecost(custo,a)
 
-      if (permutation_cost < min_cost)
-      {
-        min_cost = permutation_cost;
-        for (int i = 0; i < n; i++)
-          min_cost_assignment[i] = a[i];
-      }
-
-      n_visited++;
-      // place your code to update the best and worst solutions, and to update the histogram here
-    }
-  }
+      		if (permutation_cost < min_cost){
+      			min_cost = permutation_cost;
+      			for (int i = 0; i < n; i++){
+      				min_cost_assignment[i] = a[i];
+      			}
+      		}
+      		n_visited++;
+      		// place your code to update the best and worst solutions, and to update the histogram here
+    	}
+  	}
 }
 
 static void generate_all_permutations_branch_and_bound_max(int n, int m, int a[n], int partial_cost) // é introduzido um vetor a que vai de 0 até n
@@ -597,9 +576,13 @@ int main(int argc, char **argv)
   }
 
   if (argc == 2 && argv[1][0] == '-' && argv[1][1] == 'a'){
-    seed = 91153;
 
-    for(int i = 1; i <= 13; i++){
+  	//  93195 Hugo Filipe Ribeiro Paiva de Almeida
+	//  93019 José Lucas Sousa
+	//  91153 João Laranjo
+    seed = 93195;
+
+    for(int i = 1; i <= 14; i++){
       int n = i;
       int a[n];
       init_costs(n);
@@ -612,14 +595,6 @@ int main(int argc, char **argv)
       generate_all_permutations(n, 0, a);
       cpu_time = elapsed_time();
       show_solutions(n, "G A P", show_all);
-      printf("\n");
-
-      reset_solutions();
-      (void)elapsed_time();
-      generate_all_permutations_branch_and_bound(n, 0, a, 0);
-      generate_all_permutations_branch_and_bound_max(n, 0, a, 0);
-      cpu_time = elapsed_time();
-      show_solutions(n, "B&B", show_all);
       printf("\n");
       }
   }
