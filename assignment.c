@@ -375,7 +375,7 @@ static void generate_all_permutations(int n, int m, int a[n]){ // é introduzido
     }
 }
 
-static void generate_all_permutations_branch_and_bound(int n, int m, int a[n], int partial_cost){ // é introduzido um vetor a que vai de 0 até n
+static void generate_all_permutations_branch_and_bound_min(int n, int m, int a[n], int partial_cost){ // é introduzido um vetor a que vai de 0 até n
 	if (min_cost < (min_init_cost * (n - m) + partial_cost)){
 		return;
 	}
@@ -392,7 +392,7 @@ static void generate_all_permutations_branch_and_bound(int n, int m, int a[n], i
     a[j] = t;      \
   } while (0)
         swap(i, m);                                                                              // exchange a[i] with a[m]
-        generate_all_permutations_branch_and_bound(n, m + 1, a, (partial_cost + cost[m][a[m]])); // recurse
+        generate_all_permutations_branch_and_bound_min(n, m + 1, a, (partial_cost + cost[m][a[m]])); // recurse
         swap(i, m);                                                                              // undo the exchange of a[i] with a[m]
 #undef swap
     		}
@@ -593,7 +593,7 @@ int main(int argc, char **argv)
       reset_solutions();
       (void)elapsed_time();
       //generate_all_permutations(n, 0, a);
-      //generate_all_permutations_branch_and_bound(n, 0, a, 0);
+      //generate_all_permutations_branch_and_bound_min(n, 0, a, 0);
       //generate_all_permutations_branch_and_bound_max(n, 0, a, 0);
       greedy_method(n, a);
       cpu_time = elapsed_time();
@@ -654,7 +654,7 @@ int main(int argc, char **argv)
               a[i] = i; // initial permutation
             reset_solutions();
             (void)elapsed_time();
-            generate_all_permutations_branch_and_bound(n, 0, a, 0);
+            generate_all_permutations_branch_and_bound_min(n, 0, a, 0);
             generate_all_permutations_branch_and_bound_max(n, 0, a, 0);
             cpu_time = elapsed_time();
             printf("%d\n", n);
@@ -691,7 +691,7 @@ int main(int argc, char **argv)
             a[i] = i; // initial permutation
           reset_solutions();
           (void)elapsed_time();
-          generate_all_permutations_branch_and_bound(n, 0, a, 0);
+          generate_all_permutations_branch_and_bound_min(n, 0, a, 0);
           cpu_time = elapsed_time();
           printf("%d\n", n);
           show_solutions(n, "Brute force with branch-and-bound", show_info_2 | show_min_solution);
