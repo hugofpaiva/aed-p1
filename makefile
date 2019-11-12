@@ -5,7 +5,7 @@
 clean:
 	rm -f examples assignment a.out
 
-all:		examples
+all:		assignment examples
 
 run_all:	all
 	./examples 1

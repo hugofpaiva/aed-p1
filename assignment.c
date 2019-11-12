@@ -217,6 +217,7 @@ static void reset_solutions(void)
   min_cost = plus_inf;
   max_cost = minus_inf;
   n_visited = 0l;
+
   // place your histogram initialization code here
   memset(histogram, 0, sizeof(histogram));
   cpu_time = 0.0;
@@ -278,26 +279,29 @@ static void show_solutions(int n, char *header, int what_to_show)
   if ((what_to_show & show_histogram) != 0)
   {
     // place your code to print the histogram here
-    FILE *f = fopen("ocorrencias.txt", "w");
-    FILE *gnu = fopen("ocorrenciasgnu.txt", "w");
-    if (f == NULL)
-    {
-      printf("Erro a abrir o ficheiro ocorrencias!\n");
+
+     //start with base filename
+    char baseFilename[] = "data/result";
+    //place to store final final name
+    const int maxSize = 50;
+    char filename[maxSize];
+
+    sprintf(filename, "%s_%d.txt", baseFilename, n);
+    printf("AQUI %s", filename);
+
+    FILE *f = fopen(filename, "w");
+    if (f == NULL){
+      printf("Erro a abrir o ficheiro!\n");
       exit(1);
     }
-    if (gnu == NULL)
-    {
-      printf("Erro a abrir o ficheiro ocorrenciasgnu!\n");
-      exit(1);
+    else{
+      fprintf(f, "%d", n);
     }
 
-    for (int i = 0; i < max_n * t_range; i++)
-    {
-      fprintf(f, "%d\n", histogram[i]);
-      fprintf(gnu, "%d\t%d\n", i, histogram[i]);
+    for (int i = 0; i < max_n * t_range; i++){
+      break;
     }
     fclose(f);
-    fclose(gnu);
 
     //int status = system("gnuplot -e \" plot 'ocorrenciasgnu.txt'  title 'Values by Color'\");
     //int codigou = system("gnuplot -e \"set terminal jpeg; plot 'ocorrenciasgnu.txt' with linespoints linestyle 1\" > out.jpg"); // para sair uma imagem pelo gnu plot. Tem de ser retificado.
@@ -484,52 +488,31 @@ static void generate_all_permutations_branch_and_bound_max(int n, int m, int a[n
     }
   }
 }
-static void greedy_method(int n, int a[n])
-{
-  // x is the number of the iteration in wich we start to use the Brute Force Method (as suggested by professor Tomás)
-  int k = (int)(0.25 * n < 0 ? (0.25 * n - 0.5) : (0.25 * n + 0.5)); // k is equivalent to 25 % of the matrix
-  int x = n - k;
-  // Declaration of the binary array that holds the possibility of using a column (0) or not (1)
-  int binary_array[n];
-  memset(binary_array, 0, n * sizeof(int));
-  // Other Variables
-  int tmp_min_cost = 1000000;
-  int final_min_cost = 0; // variable that hold the value of the cost using the Greedy Method (and Brute Force for the last k lines)
-  int c_pos = 0;          // holds the position of the column that has the minimum cost. It is used to update 'binary_array'
-  int permutation_cost = 0;
-  for (int l = 0; l < n; l++) // line
-  {
-    for (int c = 0; c < n - 1; c++) // column
+
+static void greedy_method(int n, int a[n]){
+    // Declaration of the binary array that holds the possibility of using a column (0) or not (1)
+    int binary_array[n];
+    memset(binary_array, 0, n * sizeof(int));
+
+    int final_min_cost = 0; // variable that holds the value of the cost using the Greedy Method (and Brute Force for the last k lines)
+
+    for (int l = 0; l < n; l++) // line
     {
+        int c_pos; // holds the position of the column that has the minimum cost. It is used to update 'binary_array'
+        int tmp_min_cost = 1000000;
 
-      if (binary_array[c] == 1)
-      {
-        continue;
-      }
-
-      if (cost[l][c] <= cost[l][c + 1] && cost[l][c] <= tmp_min_cost && binary_array[c] == 0)
-      {
-        tmp_min_cost = cost[l][c];
-        c_pos = c;
-        continue;
-      }
-
-      if (cost[l][c] >= cost[l][c + 1] && cost[l][c + 1] <= tmp_min_cost)
-      {
-        if (binary_array[c + 1] == 0)
+        for (int c = 0; c < n; c++) // column
         {
-          tmp_min_cost = cost[l][c + 1];
-          c_pos = c + 1;
-          continue;
+            if (cost[l][c] <= tmp_min_cost && binary_array[c] == 0)
+            {
+                tmp_min_cost = cost[l][c];
+                c_pos = c;
+            }
         }
-        continue;
-      }
+        binary_array[c_pos] = 1;
+        final_min_cost += tmp_min_cost;
     }
-    binary_array[c_pos] = 1;
-    final_min_cost += tmp_min_cost;
-
-    tmp_min_cost = 1000000;
-  }
+    min_cost = final_min_cost;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -613,9 +596,32 @@ int main(int argc, char **argv)
     }
   }
 
-  if (argc == 2 && argv[1][0] == '-' && argv[1][1] == 'a')
-  {
-    //Correr todas as funções
+  if (argc == 2 && argv[1][0] == '-' && argv[1][1] == 'a'){
+    seed = 91153;
+
+    for(int i = 1; i <= 13; i++){
+      int n = i;
+      int a[n];
+      init_costs(n);
+
+      for (int i = 0; i < n; i++){
+        a[i] = i;
+      }
+      reset_solutions();
+      (void)elapsed_time();
+      generate_all_permutations(n, 0, a);
+      cpu_time = elapsed_time();
+      show_solutions(n, "G A P", show_all);
+      printf("\n");
+
+      reset_solutions();
+      (void)elapsed_time();
+      generate_all_permutations_branch_and_bound(n, 0, a, 0);
+      generate_all_permutations_branch_and_bound_max(n, 0, a, 0);
+      cpu_time = elapsed_time();
+      show_solutions(n, "B&B", show_all);
+      printf("\n");
+      }
   }
 
   if (argc == 3)
