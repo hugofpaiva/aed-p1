@@ -241,7 +241,7 @@ static void show_solutions(int n, char *header, int what_to_show){
 
   if ((what_to_show & show_info_2) != 0){
     printf("  visited ....... %ld\n", n_visited);
-    printf("  cpu time ...... %.3fs\n", cpu_time);
+    printf("  cpu time ...... %.6fs\n", cpu_time);
   }
 
   if ((what_to_show & show_costs) != 0){
@@ -291,7 +291,7 @@ static void show_solutions(int n, char *header, int what_to_show){
       exit(1);
     }
     else{
-    	fprintf(f, "%d\t\t%d\t\t%ld\t\t%.3f\t\t\t%d\t\t\t%d\n", seed, n, n_visited, cpu_time, min_cost, max_cost);
+    	fprintf(f, "%d\t\t%d\t\t%ld\t\t%.6f\t\t\t%d\t\t\t%d\n", seed, n, n_visited, cpu_time, min_cost, max_cost);
     }
 
     for (int i = 0; i < max_n * t_range; i++){
@@ -582,7 +582,7 @@ int main(int argc, char **argv)
 	//  91153 João Laranjo
     seed = 93195;
 
-    for(int i = 1; i <= 14; i++){
+    for(int i = 1; i <= 32; i++){
       int n = i;
       int a[n];
       init_costs(n);
@@ -592,9 +592,12 @@ int main(int argc, char **argv)
       }
       reset_solutions();
       (void)elapsed_time();
-      generate_all_permutations(n, 0, a);
+      //generate_all_permutations(n, 0, a);
+      //generate_all_permutations_branch_and_bound(n, 0, a, 0);
+      //generate_all_permutations_branch_and_bound_max(n, 0, a, 0);
+      greedy_method(n, a);
       cpu_time = elapsed_time();
-      show_solutions(n, "G A P", show_all);
+      show_solutions(n, "B & B", show_all);
       printf("\n");
       }
   }
