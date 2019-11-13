@@ -20,7 +20,7 @@
 // The total cost is the sum of the costs
 //
 // Things to do:
-//   0. (mandatory)
+//   0. (mandatory) Done
 //      Place the student numbers and names at the top of this file
 //   1. (highly recommended)
 //      Read and understand this code
@@ -292,14 +292,19 @@ static void show_solutions(int n, char *header, int what_to_show)
   {
     //start with base filename
     char baseFilename[] = "data/result";
+    char baseFilenameH[] = "data/histo_cost";
+
     //place to store final final name
     const int maxSize = 50;
     char filename[maxSize];
+    char filename_h[maxSize];
 
     sprintf(filename, "%s_%d.txt", baseFilename, seed);
+    sprintf(filename_h, "%s_%d.txt", baseFilenameH, n);
 
     FILE *f = fopen(filename, "a+");
-    if (f == NULL)
+    FILE *fh = fopen(filename_h, "a+");
+    if (f == NULL || fh == NULL)
     {
       printf("Erro a abrir o ficheiro!\n");
       exit(1);
@@ -307,13 +312,14 @@ static void show_solutions(int n, char *header, int what_to_show)
     else
     {
       fprintf(f, "%d\t\t%d\t\t%ld\t\t%.6f\t\t\t%d\t\t\t%d\n", seed, n, n_visited, cpu_time, min_cost, max_cost);
+      for (int i = 0; i < max_n * t_range; i++)
+      {
+        fprintf(fh, "%d\n", histogram[i]);
+      }
     }
 
-    for (int i = 0; i < max_n * t_range; i++)
-    {
-      break;
-    }
     fclose(f);
+    fclose(fh);
 
     //int status = system("gnuplot -e \" plot 'ocorrenciasgnu.txt'  title 'Values by Color'\");
     //int codigou = system("gnuplot -e \"set terminal jpeg; plot 'ocorrenciasgnu.txt' with linespoints linestyle 1\" > out.jpg"); // para sair uma imagem pelo gnu plot. Tem de ser retificado.
@@ -675,7 +681,7 @@ int main(int argc, char **argv)
         for (int n = 1; n <= max_n; n++)
         {
           init_costs(n);
-          show_solutions(n, "Problem statement", show_info_1 | show_costs);
+          show_solutions(n, "\nProblem statement", show_info_1 | show_costs);
           //
           // 2.
           //
@@ -688,7 +694,7 @@ int main(int argc, char **argv)
             (void)elapsed_time();
             generate_all_permutations(n, 0, a);
             cpu_time = elapsed_time();
-            show_solutions(n, "Brute force", show_info_2 | show_min_solution | show_max_solution);
+            show_solutions(n, "Brute force", show_info_2 | show_min_solution | show_max_solution | show_histogram);
           }
         }
       }
