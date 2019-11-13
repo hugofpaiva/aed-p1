@@ -741,6 +741,7 @@ int main(int argc, char **argv)
           reset_solutions();
           (void)elapsed_time();
           greedy_method_min(n);
+          greedy_method_max(n);
           cpu_time = elapsed_time();
           show_solutions(n, "Greedy", show_all);
         }
