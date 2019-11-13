@@ -400,16 +400,21 @@ static void generate_all_permutations(int n, int m, int a[n])
   }
 }
 
-static void generate_all_permutations_branch_and_bound_min(int n, int m, int a[n], int partial_cost){ // é introduzido um vetor a que vai de 0 até n
-	if (min_cost < (min_init_cost * (n - m) + partial_cost)){
-		return;
-	}
-	else{
-    	if (m < n - 1){
-      		//
-      		// not yet at the end; try all possibilities for a[m]
-      		//
-      		for (int i = m; i < n; i++){
+static void generate_all_permutations_branch_and_bound_min(int n, int m, int a[n], int partial_cost)
+{ // é introduzido um vetor a que vai de 0 até n
+  if (min_cost < (min_init_cost * (n - m) + partial_cost))
+  {
+    return;
+  }
+  else
+  {
+    if (m < n - 1)
+    {
+      //
+      // not yet at the end; try all possibilities for a[m]
+      //
+      for (int i = m; i < n; i++)
+      {
 #define swap(i, j) \
   do               \
   {                \
@@ -417,9 +422,9 @@ static void generate_all_permutations_branch_and_bound_min(int n, int m, int a[n
     a[i] = a[j];   \
     a[j] = t;      \
   } while (0)
-        swap(i, m);                                                                              // exchange a[i] with a[m]
+        swap(i, m);                                                                                  // exchange a[i] with a[m]
         generate_all_permutations_branch_and_bound_min(n, m + 1, a, (partial_cost + cost[m][a[m]])); // recurse
-        swap(i, m);                                                                              // undo the exchange of a[i] with a[m]
+        swap(i, m);                                                                                  // undo the exchange of a[i] with a[m]
 #undef swap
       }
     }
@@ -497,7 +502,7 @@ static void generate_all_permutations_branch_and_bound_max(int n, int m, int a[n
   }
 }
 
-static void greedy_method(int n, int a[n])
+static void greedy_method_min(int n, int a[n])
 {
   // Declaration of the binary array that holds the possibility of using a column (0) or not (1)
   int binary_array[n];
@@ -523,7 +528,32 @@ static void greedy_method(int n, int a[n])
   }
   min_cost = final_min_cost;
 }
+static void greedy_method_max(int n, int a[n])
+{
+  // Declaration of the binary array that holds the possibility of using a column (0) or not (1)
+  int binary_array[n];
+  memset(binary_array, 0, n * sizeof(int));
 
+  int final_max_cost = 0; // variable that holds the value of the cost using the Greedy Method (and Brute Force for the last k lines)
+
+  for (int l = 0; l < n; l++) // line
+  {
+    int c_pos; // holds the position of the column that has the minimum cost. It is used to update 'binary_array'
+    int tmp_max_cost = 1000000;
+
+    for (int c = 0; c < n; c++) // column
+    {
+      if (cost[l][c] >= tmp_max_cost && binary_array[c] == 0)
+      {
+        tmp_max_cost = cost[l][c];
+        c_pos = c;
+      }
+    }
+    binary_array[c_pos] = 1;
+    final_max_cost += tmp_max_cost;
+  }
+  max_cost = final_max_cost;
+}
 ////////////////////////////////////////////////////////////////////////////////////////////////////
 //
 // function to generate a pseudo-random permutation
@@ -616,18 +646,19 @@ int main(int argc, char **argv)
         int a[n];
         init_costs(n);
 
-      for (int i = 0; i < n; i++){
-        a[i] = i;
-      }
-      reset_solutions();
-      (void)elapsed_time();
-      //generate_all_permutations(n, 0, a);
-      //generate_all_permutations_branch_and_bound_min(n, 0, a, 0);
-      //generate_all_permutations_branch_and_bound_max(n, 0, a, 0);
-      greedy_method(n, a);
-      cpu_time = elapsed_time();
-      show_solutions(n, "B & B", show_all);
-      printf("\n");
+        for (int i = 0; i < n; i++)
+        {
+          a[i] = i;
+        }
+        reset_solutions();
+        (void)elapsed_time();
+        //generate_all_permutations(n, 0, a);
+        //generate_all_permutations_branch_and_bound_min(n, 0, a, 0);
+        //generate_all_permutations_branch_and_bound_max(n, 0, a, 0);
+        greedy_method_min(n, a);
+        cpu_time = elapsed_time();
+        show_solutions(n, "B & B", show_all);
+        printf("\n");
       }
     }
   }
@@ -710,7 +741,7 @@ int main(int argc, char **argv)
 
           reset_solutions();
           (void)elapsed_time();
-          greedy_method(n, a);
+          greedy_method_min(n, a);
           cpu_time = elapsed_time();
           show_solutions(n, "Greedy", show_all);
         }
