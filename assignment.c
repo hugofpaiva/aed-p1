@@ -652,10 +652,12 @@ int main(int argc, char **argv)
         }
         reset_solutions();
         (void)elapsed_time();
-        //generate_all_permutations(n, 0, a);
-        //generate_all_permutations_branch_and_bound_min(n, 0, a, 0);
-        //generate_all_permutations_branch_and_bound_max(n, 0, a, 0);
+        generate_all_permutations(n, 0, a);
+        generate_all_permutations_branch_and_bound_min(n, 0, a, 0);
+        generate_all_permutations_branch_and_bound_max(n, 0, a, 0);
+        random_permutation(n, a);
         greedy_method_min(n);
+        greedy_method_max(n);
         cpu_time = elapsed_time();
         show_solutions(n, "B & B", show_all);
         printf("\n");
