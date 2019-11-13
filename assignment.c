@@ -513,7 +513,7 @@ static void greedy_method_min(int n)
   for (int l = 0; l < n; l++) // line
   {
     int c_pos; // holds the position of the column that has the minimum cost. It is used to update 'binary_array'
-    int tmp_min_cost = 1000000;
+    int tmp_min_cost = plus_inf;
 
     for (int c = 0; c < n; c++) // column
     {
@@ -539,7 +539,7 @@ static void greedy_method_max(int n)
   for (int l = 0; l < n; l++) // line
   {
     int c_pos; // holds the position of the column that has the minimum cost. It is used to update 'binary_array'
-    int tmp_max_cost = 1000000;
+    int tmp_max_cost = minus_inf;
 
     for (int c = 0; c < n; c++) // column
     {
