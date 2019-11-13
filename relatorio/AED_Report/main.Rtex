@@ -445,8 +445,12 @@ int a[n], int partial_cost)
     \clearpage
 \subsection{The Greedy Method}
 \subsubsection{The Greedy Method for minimum value}
-    The Greedy Method for minimum value consists in iterating over the lines of a matrix of costs and finding the column which holds the minimum cost of that line. When that column is found, it's eliminated and so is the line, therefore that column won't be used again for the rest of the method. The estimated minimum cost of all the permutations for a designed '\verb|n|' is the sum of the minimum cost corresponded to all lines. \\\\
-    The minimum cost is estimated because when we are selecting the minimum cost of a line, if that cost is also in another element of that line, it will not be considered and it is eliminated another potential minimum cost.\\\\
+    The Greedy Method for minimum value consists in iterating over the lines of a matrix of costs and finding the column which holds the minimum cost of that line. When that column is found, it's eliminated and so is the line, therefore that column won't be used again for the rest of the method. The estimated minimum cost of the matrix n{\tiny{x}}n is the sum of the minimum cost available for each line. \\\\
+    
+    The minimum cost is an approximated value (almost always) because when we choose a column of a line we deny access to the rest of the elements on that column. This can lead to loss of the true minimum cost of a full line, making the value an approximation.\\\\
+    
+    -------------------NAO PERCEBO O TEXTO SEGUINTE ASS: LUCAS-----
+    
     The permutation of the estimated minimum cost is calculated getting the index of the various minimums costs corresponded to all lines. The column index will be the permutation array index and the line index will be the value of that permutation index.
     
     \begin{figure}[h!]
@@ -454,6 +458,14 @@ int a[n], int partial_cost)
     \includegraphics[scale=0.25]{example_explanation.png}
     \caption{Example using a randomly-generated matrix C}
 \end{figure}
+Let:
+\begin{itemize}  
+\item[--] (int) '\verb|n|' be the size of the matrix of costs;
+\item[--] (int) '\verb|binary_array|' be the array of ones and zeroes that enables me to use/not use a column of the matrix;
+\item[--] (int) '\verb|final_min_cost|' be the variable that hold the minimum cost through the Greedy Method;
+\item[--] (int) '\verb|c_pos|' be the variable that holds the position of the column to block in every iteration;
+\item[--] (int) '\verb|tmp_min_cost|' be the variable that is used for the first comparasion of numbers in each new line;
+\end{itemize}
     \normalsize{Version: Minimum Cost}
     \begin{lstlisting}[style=CStyle]
 static void greedy_method_min(int n)
@@ -488,8 +500,13 @@ static void greedy_method_min(int n)
     \end{lstlisting}
     \clearpage
     \subsubsection{The Greedy Method for maximum value}
-The Greedy Method for maximum value consists in iterating over the lines of a matrix of costs and finding the column which holds the maximum cost of that line. When that column is found it's eliminated and so is the line, therefore that column won't be used again for the rest of the method.The estimated maximum cost of all the permutations for a designed '\verb|n|' is the sum of the maximum cost corresponded to all lines. \\\\
-The maximum cost is estimated because when we are selecting the maximum cost of a line, if that cost is also in another element of that line, it will not be considered and it is eliminated another potential maximum cost.\\\\
+The Greedy Method for maximum value consists in iterating over the lines of a matrix of costs and finding the column which holds the maximum cost of that line. When that column is found it's eliminated and so is the line, therefore that column won't be used again for the rest of the method. The estimated maximum cost of the matrix n{\tiny{x}}n is the sum of the maximum cost available for each line. \\\\
+The maximum cost is approximated value (almost always) because when we choose a column of a line we deny access to the rest of the elements on that column. This can lead to loss of the true maximum cost of a full line, making the value an approximation .\\\\
+
+    -------------------NAO PERCEBO O TEXTO SEGUINTE ASS: LUCAS-----
+
+
+
 The permutation of the estimated maximum cost is calculated getting the index of the various maximums costs corresponded to all lines. The column index will be the permutation array index and the line index will be the value of that permutation index.
     
 \begin{figure}[h!]
@@ -498,6 +515,14 @@ The permutation of the estimated maximum cost is calculated getting the index of
     \caption{Example using a randomly-generated matrix C}
 \end{figure}
 \\
+Let:
+\begin{itemize}  
+\item[--] (int) '\verb|n|' be the size of the matrix of costs;
+\item[--] (int) '\verb|binary_array|' be the array of ones and zeroes that enables me to use/not use a column of the matrix;
+\item[--] (int) '\verb|final_max_cost|' be the variable that hold the maximum cost through the Greedy Method;
+\item[--] (int) '\verb|c_pos|' be the variable that holds the position of the column to block in every iteration;
+\item[--] (int) '\verb|tmp_max_cost|' be the variable that is used for the first comparasion of numbers in each new line;
+\end{itemize}
     \normalsize{Version: Maximum Cost}
    \begin{lstlisting}[style=CStyle]
  static void greedy_method_max(int n)
