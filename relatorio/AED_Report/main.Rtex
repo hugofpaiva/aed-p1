@@ -167,17 +167,20 @@
         Options:
         \lstset{backgroundcolor=\color{light-gray}}
         \begin{lstlisting}[frame=single]
-    -e ........................ for n=3 and n=5 using Brute Force strategy;
+    -e ........................ for n=3 and n=5 using Brute Force method;
     
-    -f <seed> ................. Uses Brute Force strategy with specified 
+    -f <seed> ................. Uses Brute Force method with specified 
                                 Seed value;
     
-    -b <seed> ................. Uses Branch and Bound strategy with specified 
+    -b <seed> ................. Uses Branch and Bound method with specified 
                                 Seed value;
-    -r <seed> <seed> <seed> <N>	Uses Brute Force strategy with Random 
+                                
+    -r <seed> <seed> <seed> <N>	Uses Brute Force method with Random 
                                 Permutations generated N times and three 
-                                specified Seed value;
-    -g <seed> ................. Uses Greedy strategy with specified Seed value;
+                                specified Seed values;
+                                
+    -g <seed> ................. Uses Greedy method with specified Seed value;
+    
     -a <seed>.................. Runs all the previous methods with specified
     Seed value.
         \end{lstlisting}
