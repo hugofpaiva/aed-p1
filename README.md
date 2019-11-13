@@ -20,11 +20,11 @@ cc -Wall -O2 assignment.c -o <executable_filename> -lm
 
 **Options:**
 ```
--e				  		for n=3 and n=5 using Brute Force strategy
--f <seed>					uses Brute Force strategy with specified Seed value
--b <seed>					uses Branch and Bound strategy with specified Seed value
--r <seed> <seed> <seed> <N>	                uses Brute Force strategy with Random Permutations generated N times and three specified Seed value
--g <seed> 					uses Greedy strategy with specified Seed value
+-e				  		for n=3 and n=5 using Brute Force method
+-f <seed>					uses Brute Force method with specified Seed value
+-b <seed>					uses Branch and Bound method with specified Seed value
+-r <seed> <seed> <seed> <N>	                uses Brute Force method with Random Permutations generated N times and three specified Seed value
+-g <seed> 					uses Greedy method with specified Seed value
 -a <seed>                                       runs all the previous methods with specified Seed value
 ```
 
