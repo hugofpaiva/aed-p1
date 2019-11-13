@@ -705,7 +705,6 @@ int main(int argc, char **argv)
 
     if (argv[1][0] == '-' && argv[1][1] == 'b')
     {
-      printf("ok");
       seed = atoi(argv[2]); // seed = student number
       if (seed >= 0 && seed <= 1000000)
       {
@@ -717,18 +716,18 @@ int main(int argc, char **argv)
           // place here your code that solves the problem with branch-and-bound
           //
 
-          if (n <= 16) // use a smaller limit here while developing your code
+          if (n <= 17) // use a smaller limit here while developing your code
           {
             int a[n];
             for (int i = 0; i < n; i++)
               a[i] = i; // initial permutation
             reset_solutions();
             (void)elapsed_time();
-            generate_all_permutations_branch_and_bound_min(n, 0, a, 0);
+            //generate_all_permutations_branch_and_bound_min(n, 0, a, 0);
             generate_all_permutations_branch_and_bound_max(n, 0, a, 0);
             cpu_time = elapsed_time();
             printf("%d\n", n);
-            show_solutions(n, "Brute force with branch-and-bound", show_info_2 | show_min_solution | show_max_solution);
+            show_solutions(n, "Brute force with branch-and-bound", show_info_2 | show_min_solution | show_max_solution | show_histogram);
           }
         }
       }
