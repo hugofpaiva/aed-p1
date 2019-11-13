@@ -1,0 +1,507 @@
+\documentclass[10pt,english]{article}
+
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+\usepackage[]{graphicx}
+\usepackage[]{color}
+\usepackage{xcolor}
+\usepackage{alltt}
+\usepackage{listings}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\setcounter{secnumdepth}{3}
+\setcounter{tocdepth}{3}
+\setlength{\parskip}{\smallskipamount}
+\setlength{\parindent}{0pt}
+\usepackage{listings}
+\usepackage{setspace}
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=blue,
+    filecolor=blue,      
+    urlcolor=blue,
+}
+
+
+
+%code
+\definecolor{mGreen}{rgb}{0,0.6,0}
+\definecolor{mGray}{rgb}{0.5,0.5,0.5}
+\definecolor{mPurple}{rgb}{0.58,0,0.82}
+
+\lstdefinestyle{CStyle}{
+    commentstyle=\color{mGreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{mGray},
+    stringstyle=\color{mPurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=C,
+    frame=single,
+    backgroundcolor=\color{light-gray}
+}
+
+% Set page margins
+\usepackage[top=100pt,bottom=100pt,left=68pt,right=66pt]{geometry}
+
+% Package used for placeholder text
+\usepackage{lipsum}
+
+% Prevents LaTeX from filling out a page to the bottom
+\raggedbottom
+
+% Adding both languages, Swedish and English, so they can be used intermittently in for example abstracts.
+\usepackage[swedish, english]{babel}
+
+% All page numbers positioned at the bottom of the page
+\usepackage{fancyhdr}
+\fancyhf{} % clear all header and footers
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0pt} % remove the header rule
+\pagestyle{fancy}
+
+% Changes the style of chapter headings
+\usepackage{titlesec}
+\titleformat{\chapter}
+   {\normalfont\LARGE\bfseries}{\thechapter.}{1em}{}
+% Change distance between chapter header and text
+\titlespacing{\chapter}{0pt}{50pt}{2\baselineskip}
+
+% Adds table captions above the table per default
+\usepackage{float}
+\floatstyle{plaintop}
+\restylefloat{table}
+
+% Adds space between caption and table
+\usepackage[tableposition=top]{caption}
+
+% Adds hyperlinks to references and ToC
+\usepackage{hyperref}
+\hypersetup{hidelinks,linkcolor = black} % Changes the link color to black and hides the hideous red border that usually is created
+
+% If multiple images are to be added, a folder (path) with all the images can be added here 
+\graphicspath{ {images/} }
+
+% Separates the first part of the report/thesis in Roman numerals
+\frontmatter
+
+\definecolor{light-gray}{gray}{0.95}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Starts the document
+\begin{document}
+
+%%% Selects the language to be used for the first couple of pages
+\selectlanguage{english}
+
+%%%%% Adds the title page
+\begin{titlepage}
+	\clearpage\thispagestyle{empty}
+	\centering
+	\vspace{2cm}
+
+	% Titles
+	{\Large Assignment Report | AED \par}
+	\vspace{0.5cm}
+	{\small Teachers : \\
+	Tomás Oliveira e Silva\\
+	João Manuel Rodrigues\par}
+	\vspace{4cm}
+	{\Huge \textbf{The Assignment Problem}} \\
+	\vspace{1cm}
+%	{\large \textbf{Kurskod} \par}
+	\vspace{4cm}
+	{\normalsize Hugo Paiva, 93195 \\ 
+	             João Laranjo, 91153 \\ % \\ specifies a new line
+	             Lucas Sousa, 93019\par}
+	\vspace{2cm}
+
+    \includegraphics[scale=0.20]{logo_ua.png}
+    
+    \vspace{2cm}
+    
+	% Information about the University
+	{\normalsize DETI \\ 
+		Universidade de Aveiro \par}
+		
+	% Set the date
+	{\normalsize 13-11-2019 \par}
+	\vspace{2cm}
+	
+	\pagebreak
+
+\end{titlepage}
+
+\tableofcontents{}
+\clearpage
+
+\section{Introduction}
+    Elaborated on the curricular plan of the course Algoritmos e Estruturas de Dados, this report is a result of the code of "The Assignment Problem", proposed by the teachers Tomás Oliveira e Silva and João Manuel Rodrigues.\\\\
+    This is an approach on how n agents (a) can be assigned to n tasks (t) such that the total cost (\textbf{C}a,t) of assignment is minimized. The matrix of costs is always randomly generated, depending on a seed, thus the minimum cost can change with every execution independently of the n number of agents/tasks.
+    
+    \subsection{Getting Started}
+        These instructions will help to compile and run developed programs on your local machine.
+        All the code can be found in a GitHub repository. A \textit{clone} can be made using the next command, if you have permissions:
+        \lstset{backgroundcolor=\color{light-gray}}
+        \begin{lstlisting}[frame=single]
+    git clone https://github.com/hugofpaiva/AED_P1
+        \end{lstlisting}
+        
+    \subsection{Prerequisites}
+        To compile programs, it is necessary to have a C compiler installed on your local machine, for example cc.
+
+    \subsection{Compiling}
+        The following command compiles assignment program (assignment.c) where \verb|<executable_filename>| will be the executable filename:
+        \lstset{backgroundcolor=\color{light-gray}}
+        \begin{lstlisting}[frame=single]
+    cc -Wall -O2 assignment.c -o <executable_filename> -lm
+        \end{lstlisting}
+    \subsection{Running}
+        Options:
+        \lstset{backgroundcolor=\color{light-gray}}
+        \begin{lstlisting}[frame=single]
+    -e ........................ for n=3 and n=5 using Brute Force strategy;
+    
+    -f <seed> ................. Uses Brute Force strategy with specified 
+                                Seed value;
+    
+    -b <seed> ................. Uses Branch and Bound strategy with specified 
+                                Seed value;
+    -r <seed> <seed> <seed> <N>	Uses Brute Force strategy with Random 
+                                Permutations generated N times and three 
+                                specified Seed value;
+    -g <seed> ................. Uses Greedy strategy with specified Seed value;
+    -a <seed>.................. Runs all the previous methods with specified
+    Seed value.
+        \end{lstlisting}
+
+\clearpage
+
+\section{Defined Functions}
+This functions are used throughout all Methods of Implementation.
+\subsection{costAssignment}
+\begin{lstlisting}[style=CStyle]
+int costAssignment(int n, int a[n]){
+  int permutation_cost = 0;
+
+  for (int i = 0; i < n; i++){
+    permutation_cost += cost[i][a[i]];
+  }
+  histogram[permutation_cost]++;
+  return permutation_cost;
+}
+\end{lstlisting}
+
+\subsection{init\_costs}
+\begin{lstlisting}[style=CStyle]
+static void init_costs(int n){
+...
+  assert(n >= 1 && n <= max_n);
+  srandom((unsigned int)seed * (unsigned int)max_n + (unsigned int)n);
+  min_init_cost = cost[0][0];
+  max_init_cost = cost[0][0];
+  for (int a = 0; a < n; a++)
+        for (int t = 0; t < n; t++){
+          cost[a][t] = 3 + (random() % range) + (random() % range) + (random() % range); // [3,3*range]
+          if (cost[a][t] < min_init_cost)
+            min_init_cost = cost[a][t];
+          if (cost[a][t] > max_init_cost)
+            max_init_cost = cost[a][t];
+        }
+}
+
+\end{lstlisting}
+
+\clearpage
+
+\section{Methods of Implementation}
+
+% A * after the section/chapter command indicates an unnumbered header which will not be added to the table of contents
+\subsection{Brute Force Method}
+
+The Brute Force Method consists in computing all the permutations of agents and tasks and for each permutation calculate the estimated cost through the matrix of costs.\\\\
+Despite being a simple method to implement, the BF search is a very exhaustive method, thus it's time consuming.
+\\\\
+Let:
+\begin{itemize}  
+\item[--] (int) 'n' be the number of agents/tasks;
+\item[--] (int) '\verb|permutation_cost|' be a temporary variable of the cost. This value is updated every iteration of the for loop;
+\item[--] (static int) '\verb|min_cost|', '\verb|max_cost|' be the variables that hold the minimum and max cost value of all permutations; 
+\end{itemize}
+
+
+\begin{lstlisting}[style=CStyle]
+static void generate_all_permutations(int n,int m,int a[n])
+{
+...
+    int permutation_cost = costAssignment(n,a);
+    if (permutation_cost > max_cost){
+        max_cost = permutation_cost;
+        for (int i = 0; i < n; i++)
+            max_cost_assignment[i] = a[i];
+    }  
+    if (permutation_cost < min_cost){
+        min_cost = permutation_cost;
+        for (int i = 0; i < n; i++)
+            min_cost_assignment[i] = a[i];
+    }  
+...
+}
+
+\end{lstlisting}
+
+\clearpage
+\subsection{The Random Permutation Method}
+    The Random Permutation Method consists in computing a large\footnote{By a 'large' number we mean a number like 1e6;}  number of permutations of size 'n' and calculating the minimum and maximum cost for those computed permutations.\\\\ Once the number of different permutations far exceeds the computed number of permutations\footnote{E.g. 10! > 1e6;}, the minimum and maximum cost are going to be an approximation of the real costs because not all possibilities are able to be computed.
+    \lstset{background color=\color{light-gray}}\\\\
+    This method is typically faster than the Brute-Force method\footnote{Depends on the number of permutations computed as well as the size "n".}.
+\begin{lstlisting}[style=CStyle]
+void random_permutation(int n, int t[n])
+{
+  assert(n >= 1 && n <= 1000000);
+  for (int i = 0; i < n; i++)
+    t[i] = i;
+  for (int i = n - 1; i > 0; i--)
+  {
+    int j = (int)floor((double)(i + 1) * (double)random() / (1.0 + 
+    (double) RAND_MAX));
+    assert(j >= 0 && j <= i);
+    int k = t[i];
+    t[i] = t[j];
+    t[j] = k;
+  }
+
+  int permutation_cost = costAssignment(n, t);
+
+  if (permutation_cost > max_cost)
+  {
+    max_cost = permutation_cost;
+    for (int i = 0; i < n; i++)
+    {
+      max_cost_assignment[i] = t[i];
+    }
+  }
+
+  if (permutation_cost < min_cost)
+  {
+    min_cost = permutation_cost;
+    for (int i = 0; i < n; i++)
+      min_cost_assignment[i] = t[i];
+  }
+}
+\end{lstlisting}
+    
+\clearpage
+
+\subsection{The Branch-and-Bound Method}
+\subsubsection{The Branch-and-Bound Method for minimum value}
+    The Branch-and-Bound Method for minimum value consists in computing the cost of a permutation of n agents and if its cost is larger than the minimum cost of a previous permutation it immediately discards the current permutation and moves on to the next one.\\
+    
+    \normalsize{Version: Minimum Cost}
+    \begin{lstlisting}[style=CStyle]
+static void generate_all_permutations_branch_and_bound_min(int n, int m,
+int a[n], int partial_cost)
+{
+  if (min_cost < (min_init_cost * (n - m) + partial_cost))
+  {
+    return;
+  }
+  else
+  {
+    if (m < n - 1)
+    {
+      for (int i = m; i < n; i++)
+      {
+#define swap(i, j) 
+  do               
+  {                
+    int t = a[i];  
+    a[i] = a[j];   
+    a[j] = t;      
+  } while (0)
+        swap(i, m);                                                                             
+        generate_all_permutations_branch_and_bound_min(n, m + 1, a,
+        (partial_cost + cost[m][a[m]])); 
+        swap(i, m);                                                                                  
+#undef swap
+      }
+    }
+    else
+    {
+
+      int permutation_cost = costAssignment(n, a); //Custo total
+
+      if (permutation_cost < min_cost)
+      {
+        min_cost = permutation_cost;
+        for (int i = 0; i < n; i++)
+        {
+          min_cost_assignment[i] = a[i];
+        }
+      }
+      n_visited++;
+    }
+  }
+}
+
+    \end{lstlisting}
+\clearpage
+\subsubsection{The Branch-and-Bound Method for maximum value}
+    The Branch-and-Bound Method for maximum value consists in computing the cost of a permutation of n agents and if its cost is smaller than the maximum cost of a previous permutation it immediately discards the current permutation and moves on to the next one.\\
+    
+    \normalsize{Version: Maximum Cost}
+    \begin{lstlisting}[style=CStyle]
+static void generate_all_permutations_branch_and_bound_max(int n, int m,
+int a[n], int partial_cost)
+{
+  if (max_cost > (max_init_cost * (n - m) + partial_cost))
+    return;
+  else
+  {
+    if (m < n - 1)
+    {
+      for (int i = m; i < n; i++)
+      {
+#define swap(i, j) 
+  do               
+  {                
+    int t = a[i];  
+    a[i] = a[j];   
+    a[j] = t;      
+  } while (0)
+        swap(i, m);                                                         
+        generate_all_permutations_branch_and_bound_max(n, m + 1, a,
+        (partial_cost + cost[m][a[m]]));
+        swap(i, m);                                                         
+#undef swap
+      }
+    }
+    else 
+    {
+      int permutation_cost = costAssignment(n, a);
+      
+      if (permutation_cost > max_cost)
+      {
+        max_cost = permutation_cost;
+        for (int i = 0; i < n; i++)
+          max_cost_assignment[i] = a[i];
+      }
+
+      n_visited++;
+
+    }
+  }
+}
+    \end{lstlisting}
+    \clearpage
+\subsection{The Greedy Method}
+\subsubsection{The Greedy Method for minimum value}
+    The Greedy Method for minimum value consists in iterating over the lines of a matrix of costs and finding the column which holds the minimum cost of that line. When the that column is found it's eliminated and so is the line, therefore that column won't be used again for the rest of the method.
+    
+    \begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.25]{example_explanation.png}
+    \caption{Example using a randomly-generated matrix C}
+\end{figure}
+    \normalsize{Version: Minimum Cost}
+    \begin{lstlisting}[style=CStyle]
+static void greedy_method_min(int n)
+{
+  // Declaration of the binary array that holds the possibility of using a
+  column (0) or not (1)
+  int binary_array[n];
+  memset(binary_array, 0, n * sizeof(int));
+
+  int final_min_cost = 0; // variable that holds the value of the cost using the 
+  Greedy Method (and Brute Force for the last k lines)
+
+  for (int l = 0; l < n; l++) // line
+  {
+    int c_pos; // holds the position of the column that has the minimum cost. It 
+    is used to update 'binary_array'
+    int tmp_min_cost = plus_inf;
+
+    for (int c = 0; c < n; c++) // column
+    {
+      if (cost[l][c] <= tmp_min_cost && binary_array[c] == 0)
+      {
+        tmp_min_cost = cost[l][c];
+        c_pos = c;
+      }
+    }
+    binary_array[c_pos] = 1;
+    final_min_cost += tmp_min_cost;
+  }
+  min_cost = final_min_cost;
+}
+    \end{lstlisting}
+    \clearpage
+    \subsubsection{The Greedy Method for maximum value}
+The Greedy Method for maximum value consists in iterating over the lines of a matrix of costs and finding the column which holds the maximum cost of that line. When the that column is found it's eliminated and so is the line, therefore that column won't be used again for the rest of the method.\\
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.25]{max_greedy.png}
+    \caption{Example using a randomly-generated matrix C}
+\end{figure}
+\\
+    \normalsize{Version: Maximum Cost}
+   \begin{lstlisting}[style=CStyle]
+ static void greedy_method_max(int n)
+{
+  // Declaration of the binary array that holds the possibility of using a
+  column (0) or not (1)
+  int binary_array[n];
+  memset(binary_array, 0, n * sizeof(int));
+
+  int final_max_cost = 0; // variable that holds the value of the cost using the 
+  Greedy Method (and Brute Force for the last k lines)
+
+  for (int l = 0; l < n; l++) // line
+  {
+    int c_pos; // holds the position of the column that has the minimum cost. It 
+    is used to update 'binary_array'
+    int tmp_max_cost = minus_inf;
+
+    for (int c = 0; c < n; c++) // column
+    {
+      if (cost[l][c] >= tmp_max_cost && binary_array[c] == 0)
+      {
+        tmp_max_cost = cost[l][c];
+        c_pos = c;
+      }
+    }
+    binary_array[c_pos] = 1;
+    final_max_cost += tmp_max_cost;
+  }
+  max_cost = final_max_cost;
+}
+    \end{lstlisting}
+    
+    \clearpage
+
+\section{Results}
+    \clearpage
+
+\section{Conclusion}
+    \clearpage
+
+\section{Bibliography}
+
+\bibliographystyle{plain}
+
+\bibliography{biblist}
+
+\vspace{5mm} %5mm vertical space
+
+[1] ZÚQUETE, André Ventura. \textbf{Segurança em Redes Informáticas}. 4ª Edição. FCA - Editora de Informática 
+
+[2] \url{https://cs.stackexchange.com/questions/72593/is-there-a-greedy-algorithm-to-solve-the-assignment-problem}
+
+\end{document}
