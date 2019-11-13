@@ -69,9 +69,9 @@
 #define random rand
 #endif
 
-#define max_n 32            // do not change this (maximum number of agents, and tasks)
-#define range 20            // do not change this (for the pseudo-random generation of costs)
-#define t_range (3 * range) // do not change this (maximum cost of an assignment)
+#define max_n 32              // do not change this (maximum number of agents, and tasks)
+#define range 20              // do not change this (for the pseudo-random generation of costs)
+#define t_range (3 * range)   // do not change this (maximum cost of an assignment)
 #define minus_inf -1000000000 // a very small integer
 #define plus_inf +1000000000  // a very large integer
 
@@ -137,7 +137,6 @@ static void init_costs(int n)
       if (cost[a][t] > max_init_cost)
         max_init_cost = cost[a][t];
     }
-  
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -530,6 +529,7 @@ static void greedy_method_min(int n)
       }
     }
     binary_array[c_pos] = 1;
+    min_cost_assignment[l] = c_pos;
     final_min_cost += tmp_min_cost;
   }
   min_cost = final_min_cost;
@@ -556,6 +556,7 @@ static void greedy_method_max(int n)
       }
     }
     binary_array[c_pos] = 1;
+    max_cost_assignment[l] = c_pos;
     final_max_cost += tmp_max_cost;
   }
   max_cost = final_max_cost;
