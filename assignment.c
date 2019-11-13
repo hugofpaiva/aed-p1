@@ -502,7 +502,7 @@ static void generate_all_permutations_branch_and_bound_max(int n, int m, int a[n
   }
 }
 
-static void greedy_method_min(int n, int a[n])
+static void greedy_method_min(int n)
 {
   // Declaration of the binary array that holds the possibility of using a column (0) or not (1)
   int binary_array[n];
@@ -528,7 +528,7 @@ static void greedy_method_min(int n, int a[n])
   }
   min_cost = final_min_cost;
 }
-static void greedy_method_max(int n, int a[n])
+static void greedy_method_max(int n)
 {
   // Declaration of the binary array that holds the possibility of using a column (0) or not (1)
   int binary_array[n];
@@ -655,7 +655,7 @@ int main(int argc, char **argv)
         //generate_all_permutations(n, 0, a);
         //generate_all_permutations_branch_and_bound_min(n, 0, a, 0);
         //generate_all_permutations_branch_and_bound_max(n, 0, a, 0);
-        greedy_method_min(n, a);
+        greedy_method_min(n);
         cpu_time = elapsed_time();
         show_solutions(n, "B & B", show_all);
         printf("\n");
@@ -709,7 +709,6 @@ int main(int argc, char **argv)
 
           if (n <= 16) // use a smaller limit here while developing your code
           {
-
             int a[n];
             for (int i = 0; i < n; i++)
               a[i] = i; // initial permutation
@@ -741,7 +740,7 @@ int main(int argc, char **argv)
 
           reset_solutions();
           (void)elapsed_time();
-          greedy_method_min(n, a);
+          greedy_method_min(n);
           cpu_time = elapsed_time();
           show_solutions(n, "Greedy", show_all);
         }
