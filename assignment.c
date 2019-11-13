@@ -72,6 +72,8 @@
 #define max_n 32            // do not change this (maximum number of agents, and tasks)
 #define range 20            // do not change this (for the pseudo-random generation of costs)
 #define t_range (3 * range) // do not change this (maximum cost of an assignment)
+#define minus_inf -1000000000 // a very small integer
+#define plus_inf +1000000000  // a very large integer
 
 static int cost[max_n][max_n];
 static int seed; // place a student number here!
@@ -124,8 +126,8 @@ static void init_costs(int n)
   }
   assert(n >= 1 && n <= max_n);
   srandom((unsigned int)seed * (unsigned int)max_n + (unsigned int)n);
-  min_init_cost = cost[0][0];
-  max_init_cost = cost[0][0];
+  min_init_cost = plus_inf;
+  max_init_cost = minus_inf;
   for (int a = 0; a < n; a++)
     for (int t = 0; t < n; t++)
     {
@@ -209,9 +211,6 @@ static long n_visited;                           // number of permutations visit
 // place your histogram global variable here
 static int histogram[max_n * t_range]; // Cada valor do array histogram corresponde ao numero de ocorrências do custo, que é o indice desse valor
 static double cpu_time;
-
-#define minus_inf -1000000000 // a very small integer
-#define plus_inf +1000000000  // a very large integer
 
 static void reset_solutions(void)
 {
@@ -699,6 +698,7 @@ int main(int argc, char **argv)
 
     if (argv[1][0] == '-' && argv[1][1] == 'b')
     {
+      printf("ok");
       seed = atoi(argv[2]); // seed = student number
       if (seed >= 0 && seed <= 1000000)
       {

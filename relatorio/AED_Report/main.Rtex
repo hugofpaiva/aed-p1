@@ -110,7 +110,7 @@
 	% Titles
 	{\Large Assignment Report | AED \par}
 	\vspace{0.5cm}
-	{\small Teachers : \\
+	{\small Teachers: \\
 	Tomás Oliveira e Silva\\
 	João Manuel Rodrigues\par}
 	\vspace{4cm}
@@ -148,7 +148,7 @@
     
     \subsection{Getting Started}
         These instructions will help to compile and run developed programs on your local machine.
-        All the code can be found in a GitHub repository. A \textit{clone} can be made using the next command, if you have permissions:
+        All the code can be found in a GitHub repository. A clone can be made using the next command, if you have permissions\footnote{For confidentiality reasons, the repository may be private.}:
         \lstset{backgroundcolor=\color{light-gray}}
         \begin{lstlisting}[frame=single]
     git clone https://github.com/hugofpaiva/AED_P1
@@ -185,8 +185,17 @@
 \clearpage
 
 \section{Defined Functions}
-This functions are used throughout all Methods of Implementation.
+This functions are used throughout some Methods of Implementation.
 \subsection{costAssignment}
+The '\verb|costAssignment|' function inhere the calculation of the passed permutation cost as well as adding one occurrence to the permutation cost on the histogram.\\
+Later on, the '\verb|histogram[permutation_cost]|' will be used to render the histogram, and the '\verb|permutation_cost|' will be necessary to the The Random Permutation,Brute Force , and The Branch-and-Bound Methods
+\\\\
+Let:
+\begin{itemize}  
+\item[--] (int) 'n' be the number of agents/tasks;
+\item[--] (int) '\verb|permutation_cost|' be a temporary variable of cost relative to the actual permutation. This value is updated in every iteration of the for loop;
+\item[--] (static int) '\verb|histogram[i]|' be the array that holds the number of occurrences relative to '\verb|i|', the '\verb|permutation_cost|'; 
+\end{itemize}
 \begin{lstlisting}[style=CStyle]
 int costAssignment(int n, int a[n]){
   int permutation_cost = 0;
@@ -200,21 +209,30 @@ int costAssignment(int n, int a[n]){
 \end{lstlisting}
 
 \subsection{init\_costs}
+The '\verb|init_costs|' function lie on the generation of the matrix constituted by the costs assigned to a certain agent (a) and task (t). During the generation of this matrix, the function has also the responsibility to calculate the '\verb|min_int_cost|' and the '\verb|max_init_cost|', both the minimum and maximum cost of all costs.  To do so,  this variables where started as a very large integer and a very small integer\footnote{Defined previously.}, respectively, making afterwards a comparison during the creation of a cost of the costs matrix. This will determine if the actual generated cost is smaller or bigger than this variables.\\
+Later on, the '\verb|min_init_cost|' and the '\verb|max_init_cost|' will be helpful on the The Branch-and-Bound Method.
+\\\\
+Let:
+\begin{itemize}  
+\item[--] (static int) '\verb|cost[a][t]|' be the number of agents/tasks;
+\item[--] (static int) '\verb|min_int_cost|', '\verb|max_int_cost|'  be the variables that hold the minimum and maximum cost of all costs.
+\end{itemize}
 \begin{lstlisting}[style=CStyle]
 static void init_costs(int n){
 ...
-  assert(n >= 1 && n <= max_n);
+   assert(n >= 1 && n <= max_n);
   srandom((unsigned int)seed * (unsigned int)max_n + (unsigned int)n);
-  min_init_cost = cost[0][0];
-  max_init_cost = cost[0][0];
+  min_init_cost = plus_inf;
+  max_init_cost = minus_inf;
   for (int a = 0; a < n; a++)
-        for (int t = 0; t < n; t++){
-          cost[a][t] = 3 + (random() % range) + (random() % range) + (random() % range); // [3,3*range]
-          if (cost[a][t] < min_init_cost)
-            min_init_cost = cost[a][t];
-          if (cost[a][t] > max_init_cost)
-            max_init_cost = cost[a][t];
-        }
+    for (int t = 0; t < n; t++)
+    {
+      cost[a][t] = 3 + (random() % range) + (random() % range) + (random() % range); // [3,3*range]
+      if (cost[a][t] < min_init_cost)
+        min_init_cost = cost[a][t];
+      if (cost[a][t] > max_init_cost)
+        max_init_cost = cost[a][t];
+    }
 }
 
 \end{lstlisting}
@@ -231,7 +249,7 @@ Despite being a simple method to implement, the BF search is a very exhaustive m
 \\\\
 Let:
 \begin{itemize}  
-\item[--] (int) 'n' be the number of agents/tasks;
+\item[--] (int) '\verb|n|' be the number of agents/tasks;
 \item[--] (int) '\verb|permutation_cost|' be a temporary variable of the cost. This value is updated every iteration of the for loop;
 \item[--] (static int) '\verb|min_cost|', '\verb|max_cost|' be the variables that hold the minimum and max cost value of all permutations; 
 \end{itemize}
