@@ -50,6 +50,28 @@
     backgroundcolor=\color{light-gray}
 }
 
+
+\lstdefinestyle{MATStyle}{
+    commentstyle=\color{mGreen},
+    keywordstyle=\color{blue},
+    numberstyle=\tiny\color{mGray},
+    stringstyle=\color{mGreen},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=Matlab,
+    frame=single,
+    backgroundcolor=\color{light-gray}
+}
+
 % Set page margins
 \usepackage[top=100pt,bottom=100pt,left=68pt,right=66pt]{geometry}
 
@@ -59,55 +81,47 @@
 % Prevents LaTeX from filling out a page to the bottom
 \raggedbottom
 
-% Adding both languages, Swedish and English, so they can be used intermittently in for example abstracts.
-\usepackage[swedish, english]{babel}
 
-% All page numbers positioned at the bottom of the page
+\usepackage[english, english]{babel}
+
+
 \usepackage{fancyhdr}
-\fancyhf{} % clear all header and footers
+\fancyhf{} 
 \fancyfoot[C]{\thepage}
-\renewcommand{\headrulewidth}{0pt} % remove the header rule
+\renewcommand{\headrulewidth}{0pt} 
 \pagestyle{fancy}
 
-% Changes the style of chapter headings
 \usepackage{titlesec}
 \titleformat{\chapter}
    {\normalfont\LARGE\bfseries}{\thechapter.}{1em}{}
-% Change distance between chapter header and text
 \titlespacing{\chapter}{0pt}{50pt}{2\baselineskip}
 
-% Adds table captions above the table per default
 \usepackage{float}
 \floatstyle{plaintop}
 \restylefloat{table}
 
-% Adds space between caption and table
 \usepackage[tableposition=top]{caption}
 
-% Adds hyperlinks to references and ToC
-\usepackage{hyperref}
-\hypersetup{hidelinks,linkcolor = black} % Changes the link color to black and hides the hideous red border that usually is created
 
-% If multiple images are to be added, a folder (path) with all the images can be added here 
+\usepackage{hyperref}
+\hypersetup{hidelinks,linkcolor = black}
+
+
 \graphicspath{ {images/} }
 
-% Separates the first part of the report/thesis in Roman numerals
 \frontmatter
 
 \definecolor{light-gray}{gray}{0.95}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Starts the document
 \begin{document}
 
-%%% Selects the language to be used for the first couple of pages
 \selectlanguage{english}
 
-%%%%% Adds the title page
 \begin{titlepage}
 	\clearpage\thispagestyle{empty}
 	\centering
 	\vspace{2cm}
 
-	% Titles
+	
 	{\Large Assignment Report | AED \par}
 	\vspace{0.5cm}
 	{\small Teachers: \\
@@ -116,10 +130,9 @@
 	\vspace{4cm}
 	{\Huge \textbf{The Assignment Problem}} \\
 	\vspace{1cm}
-%	{\large \textbf{Kurskod} \par}
 	\vspace{4cm}
 	{\normalsize Hugo Paiva, 93195 \\ 
-	             João Laranjo, 91153 \\ % \\ specifies a new line
+	             João Laranjo, 91153 \\ 
 	             Lucas Sousa, 93019\par}
 	\vspace{2cm}
 
@@ -127,11 +140,9 @@
     
     \vspace{2cm}
     
-	% Information about the University
 	{\normalsize DETI \\ 
 		Universidade de Aveiro \par}
 		
-	% Set the date
 	{\normalsize 13-11-2019 \par}
 	\vspace{2cm}
 	
@@ -143,22 +154,22 @@
 \clearpage
 
 \section{Introduction}
-    Elaborated on the curricular plan of the course Algoritmos e Estruturas de Dados, this report is a result of the code of "The Assignment Problem", proposed by the teachers Tomás Oliveira e Silva and João Manuel Rodrigues.\\\\
-    This is an approach on how n agents (a) can be assigned to n tasks (t) such that the total cost (\textbf{C}a,t) of assignment is minimized. The matrix of costs is always randomly generated, depending on a seed, thus the minimum cost can change with every execution independently of the n number of agents/tasks.
+    Elaborated on the curricular plan of the course Algoritmos e Estruturas de Dados, this report is a result of the code of "The Assignment Problem", proposed by the teachers.\\\\
+    This is an approach on how n agents (a) can be assigned to n tasks (t) such that the total cost (\textbf{C}a,t) of assignment is minimized (or even maximized). The matrix of costs is randomly generated, depending on a seed, thus the minimum/maximum cost can change with every execution.
     
     \subsection{Getting Started}
         These instructions will help to compile and run developed programs on your local machine.
-        All the code can be found in a GitHub repository. A clone can be made using the next command, if you have permissions\footnote{For confidentiality reasons, the repository may be private.}:
+        All the code can be found in a GitHub repository. A clone can be made using the next command, if you have permissions\footnote{For confidentiality reasons, the repository is private.}:
         \lstset{backgroundcolor=\color{light-gray}}
         \begin{lstlisting}[frame=single]
     git clone https://github.com/hugofpaiva/AED_P1
         \end{lstlisting}
         
     \subsection{Prerequisites}
-        To compile programs, it is necessary to have a C compiler installed on your local machine, for example cc.
+        To compile programs, it is necessary to have a C compiler like cc installed on your local machine.
 
     \subsection{Compiling}
-        The following command compiles assignment program (assignment.c) where \verb|<executable_filename>| will be the executable filename:
+        The following command compiles the assignment program (assignment.c) where \verb|<executable_filename>| will be the executable filename:
         \lstset{backgroundcolor=\color{light-gray}}
         \begin{lstlisting}[frame=single]
     cc -Wall -O2 assignment.c -o <executable_filename> -lm
@@ -188,10 +199,11 @@
 \clearpage
 
 \section{Defined Functions}
-This functions are used throughout some Methods of Implementation.
+This functions are used throughout some methods of implementation.
 \subsection{costAssignment}
+
 The '\verb|costAssignment|' function inhere the calculation of the passed permutation cost as well as adding one occurrence to the permutation cost on the histogram.\\\\
-Later on, the '\verb|histogram[permutation_cost]|' will be used to render the histogram, and the '\verb|permutation_cost|' will be necessary to the The Random Permutation,Brute Force , and The Branch-and-Bound Methods
+Later on, the '\verb|histogram[permutation_cost]|' will be used to render the histogram, and the '\verb|permutation_cost|' will be necessary to the The Random Permutation, Brute Force , and The Branch-and-Bound Methods.
 \\\\
 Let:
 \begin{itemize}  
@@ -210,10 +222,10 @@ int costAssignment(int n, int a[n]){
   return permutation_cost;
 }
 \end{lstlisting}
-
+\clearpage
 \subsection{init\_costs}
-The '\verb|init_costs|' function lie on the generation of the matrix constituted by the costs assigned to a certain agent (a) and task (t). During the generation of this matrix, the function has also the responsibility to calculate the '\verb|min_int_cost|' and the '\verb|max_init_cost|', both the minimum and maximum cost of all costs.  To do so,  this variables where started as a very large integer and a very small integer\footnote{Defined previously.}, respectively, making afterwards a comparison during the creation of a cost of the costs matrix. This will determine if the actual generated cost is smaller or bigger than this variables.\\\\
-Later on, the '\verb|min_init_cost|' and the '\verb|max_init_cost|' will be helpful on the The Branch-and-Bound Method.
+The '\verb|init_costs|' function lies on the generation of the matrix constituted by the costs assigned to a certain agent (a) and task (t). During the generation of this matrix, the function also has the responsibility to calculate the '\verb|min_int_cost|' and the '\verb|max_init_cost|', both the minimum and maximum cost of all costs.  To do so,  this variables were started as a very large integer and a very small integer\footnote{Defined previously.}, respectively, making afterwards a comparison during the creation of a cost of the matrix of costs. This will determine if the actual generated cost is smaller or larger than this variables.\\\\
+Later on, the '\verb|min_init_cost|' and the '\verb|max_init_cost|' will be helpful in The Branch-and-Bound Method.
 \\\\
 Let:
 \begin{itemize}  
@@ -244,13 +256,12 @@ static void init_costs(int n){
 
 \section{Methods of Implementation}
 
-% A * after the section/chapter command indicates an unnumbered header which will not be added to the table of contents
 \subsection{Brute Force Method}
 
 The Brute Force Method consists in computing all the permutations of agents and tasks and for each permutation calculate the estimated cost through the matrix of costs.\\\\
 This Method is capable of calculating both the minimum and maximum cost of all the permutations, designated by the number of agents/tasks, in addition to the permutation associated with that minimum and maximum cost.
 \\\\
-For that, the function starts by receiving the number of agents/task, the index of the actual permutation and a permutation. Then it is done a swap between the various values of the permutation and when the index of the actual permutation reaches the end of the permutation (\verb|n|), the cost of that permutation is computed as well as the confirmation if it is the potential minimum or maximum cost, storing the actual permutation, if confirmed.
+The function receives the number of agents/task, the index of the permutation and a permutation. Then it's swapped between the various values of the permutation and when the index of the permutation reaches the end of the permutation (\verb|n|), the cost of that permutation is computed as well as the confirmation if it is the potential minimum or maximum cost, storing the actual permutation, if confirmed.
 \\\\
 Despite being a simple method to implement, the Brute Force search is a very exhaustive method, thus it's time consuming.
 \\\\
@@ -266,32 +277,53 @@ Let:
 
 
 \begin{lstlisting}[style=CStyle]
-static void generate_all_permutations(int n,int m,int a[n])
-{
-...
-    int permutation_cost = costAssignment(n,a);
-    if (permutation_cost > max_cost){
-        max_cost = permutation_cost;
-        for (int i = 0; i < n; i++)
-            max_cost_assignment[i] = a[i];
-    }  
-    if (permutation_cost < min_cost){
-        min_cost = permutation_cost;
-        for (int i = 0; i < n; i++)
-            min_cost_assignment[i] = a[i];
-    }  
-...
+static void generate_all_permutations(int n, int m, int a[n])
+{ 
+  if (m < n - 1)
+  {
+    for (int i = m; i < n; i++)
+    {
+#define swap(i, j) 
+  do               
+  {                
+    int t = a[i];  
+    a[i] = a[j];   
+    a[j] = t;      
+  } while (0)
+      swap(i, m);                             
+      generate_all_permutations(n, m + 1, a); 
+      swap(i, m);                             
+#undef swap
+    }
+  }
+  else
+  {
+    int permutation_cost = costAssignment(n, a); 
+    if (permutation_cost > max_cost)
+    {
+      max_cost = permutation_cost;
+      for (int i = 0; i < n; i++)
+        max_cost_assignment[i] = a[i];
+    }
+    if (permutation_cost < min_cost)
+    {
+      min_cost = permutation_cost;
+      for (int i = 0; i < n; i++)
+        min_cost_assignment[i] = a[i];
+    }
+    n_visited++;
+  }
 }
 
 \end{lstlisting}
 
 \clearpage
 \subsection{The Random Permutation Method}
-    The Random Permutation Method consists in computing a large\footnote{By a 'large' number we mean a number like 1e6;}  number of permutations of size 'n' and calculating the minimum and maximum cost for those computed permutations.
+    The Random Permutation Method consists in computing a large\footnote{By a 'large' it's meant a number like 1e6;}  number of permutations of size 'n' and calculating the minimum and maximum cost for those computed permutations.
     \\\\ 
     Once the number of different permutations far exceeds the computed number of permutations\footnote{E.g. 10! > 1e6;}, the minimum and maximum cost are going to be an approximation of the real costs because not all possibilities are able to be computed.
     \\\\
-    To reach this goal, the function starts by receiving the number of agents/task and a permutation. After that, the permutation is randomized and the cost of that permutation is computed as well as the confirmation if it is the potential minimum or maximum cost, storing the actual permutation, if confirmed.
+    To reach this goal, the function is reused various times, in each starting by receiving the number of agents/task and a permutation. After that, the permutation is randomized and the cost of that permutation is computed as well as the confirmation if it is the potential minimum or maximum cost, storing the actual permutation, if confirmed.
     \\\\
     This method is typically faster than the Brute-Force method\footnote{Depends on the number of permutations computed as well as the size 'n'.}.
     \\\\
@@ -319,9 +351,7 @@ void random_permutation(int n, int t[n])
     t[i] = t[j];
     t[j] = k;
   }
-
   int permutation_cost = costAssignment(n, t);
-
   if (permutation_cost > max_cost)
   {
     max_cost = permutation_cost;
@@ -330,7 +360,6 @@ void random_permutation(int n, int t[n])
       max_cost_assignment[i] = t[i];
     }
   }
-
   if (permutation_cost < min_cost)
   {
     min_cost = permutation_cost;
@@ -344,7 +373,20 @@ void random_permutation(int n, int t[n])
 
 \subsection{The Branch-and-Bound Method}
 \subsubsection{The Branch-and-Bound Method for minimum value}
-    The Branch-and-Bound Method for minimum value consists in computing the cost of a permutation of n agents and if its cost is larger than the minimum cost of a previous permutation it immediately discards the current permutation and moves on to the next one.\\
+    The Branch-and-Bound Method for minimum value consists in computing the cost of a permutation of n agents and if it's cost is larger than the minimum cost of a previous permutation, it immediately discards the current permutation and moves on to the next one.\\\\
+    The function receives the number of agents/tasks, the index of the permutation, a permutation and the partial cost of the permutation until the index '\verb|m|'. \\\\
+    This is accomplished by checking every time the function is called, if the actual minimum cost is smaller than the smallest possible minimum cost relative to the rest of the permutation. \\\\If not, the permutation is swapped between the various values of the permutation and when the index of the permutation (\verb|m|) reaches the end of the permutation (\verb|n|), the cost of that permutation is computed, as well as the confirmation if it's the potential minimum cost, storing the actual permutation, if confirmed. \\\\If the actual minimum cost is smaller than the smallest possible minimum cost relative to the rest of the permutation, it discards the current permutation and moves on to the next one because it is know the best value.\\\\
+    Let:
+    \begin{itemize}  
+\item[--] (int) '\verb|n|' be the number of agents/tasks;
+\item[--] (int) '\verb|m|' be the index of the actual permutation;
+\item[--] (int) '\verb|a[n]|' be the given permutation;
+\item[--] (int) '\verb|partial_cost|' be the partial cost of the permutation until the index '\verb|m|' ;
+\item[--] (int) '\verb|permutation_cost|' be a temporary variable of the cost. This value is updated every iteration of the for loop when '\verb|m|' = '\verb|n|';
+\item[--] (static int) '\verb|min_int_cost|', '\verb|max_int_cost|'  be the variables that hold the minimum and maximum cost of all costs;
+\item[--] (static int) '\verb|min_cost|', '\verb|max_cost|' be the variables that hold the minimum and max cost value of all permutations;
+\item[--] (static int) '\verb|min_cost_assignment|', '\verb|max_cost_assignment|' be the variables that hold the permutation associated with minimum and max cost value of all permutations.
+\end{itemize}
     
     \normalsize{Version: Minimum Cost}
     \begin{lstlisting}[style=CStyle]
@@ -371,15 +413,13 @@ int a[n], int partial_cost)
         swap(i, m);                                                                             
         generate_all_permutations_branch_and_bound_min(n, m + 1, a,
         (partial_cost + cost[m][a[m]])); 
-        swap(i, m);                                                                                  
+        swap(i, m);                                                     
 #undef swap
       }
     }
     else
     {
-
-      int permutation_cost = costAssignment(n, a); //Custo total
-
+      int permutation_cost = costAssignment(n, a); 
       if (permutation_cost < min_cost)
       {
         min_cost = permutation_cost;
@@ -396,7 +436,20 @@ int a[n], int partial_cost)
     \end{lstlisting}
 \clearpage
 \subsubsection{The Branch-and-Bound Method for maximum value}
-    The Branch-and-Bound Method for maximum value consists in computing the cost of a permutation of n agents and if its cost is smaller than the maximum cost of a previous permutation it immediately discards the current permutation and moves on to the next one.\\
+    The Branch-and-Bound Method for maximum value consists in computing the cost of a permutation of n agents and if its cost is smaller than the maximum cost of a previous permutation it immediately discards the current permutation and moves on to the next one.\\\\
+    The function receives the number of agents/tasks, the index of the permutation, a permutation and the the partial cost of the permutation until the index '\verb|m|'. \\\\
+    This is accomplished by checking every time the function is called, if the actual maximum cost is bigger than the biggest possible maximum cost relative to the rest of the permutation. \\\\If not, the permutation is swapped between the various values of the permutation and when the index of the permutation (\verb|m|) reaches the end of the permutation (\verb|n|), the cost of that permutation is computed, as well as the confirmation if it's the potential maximum cost, storing the actual permutation, if confirmed. \\\\If the actual maximum cost is bigger than the biggest possible maximum cost relative to the rest of the permutation, it discards the current permutation and moves on to the next one because it is know the best value.\\\\
+    Let:
+\begin{itemize}  
+\item[--] (int) '\verb|n|' be the number of agents/tasks;
+\item[--] (int) '\verb|m|' be the index of the actual permutation;
+\item[--] (int) '\verb|a[n]|' be the given permutation;
+\item[--] (int) '\verb|partial_cost|' be the partial cost of the permutation until the index '\verb|m|' ;
+\item[--] (int) '\verb|permutation_cost|' be a temporary variable of the cost. This value is updated every iteration of the for loop when '\verb|m|' = '\verb|n|';
+\item[--] (static int) '\verb|min_int_cost|', '\verb|max_int_cost|'  be the variables that hold the minimum and maximum cost of all costs;
+\item[--] (static int) '\verb|min_cost|', '\verb|max_cost|' be the variables that hold the minimum and max cost value of all permutations;
+\item[--] (static int) '\verb|min_cost_assignment|', '\verb|max_cost_assignment|' be the variables that hold the permutation associated with minimum and max cost value of all permutations.
+\end{itemize}
     
     \normalsize{Version: Maximum Cost}
     \begin{lstlisting}[style=CStyle]
@@ -428,16 +481,13 @@ int a[n], int partial_cost)
     else 
     {
       int permutation_cost = costAssignment(n, a);
-      
       if (permutation_cost > max_cost)
       {
         max_cost = permutation_cost;
         for (int i = 0; i < n; i++)
           max_cost_assignment[i] = a[i];
       }
-
       n_visited++;
-
     }
   }
 }
@@ -446,13 +496,8 @@ int a[n], int partial_cost)
 \subsection{The Greedy Method}
 \subsubsection{The Greedy Method for minimum value}
     The Greedy Method for minimum value consists in iterating over the lines of a matrix of costs and finding the column which holds the minimum cost of that line. When that column is found, it's eliminated and so is the line, therefore that column won't be used again for the rest of the method. The estimated minimum cost of the matrix n{\tiny{x}}n is the sum of the minimum cost available for each line. \\\\
-    
     The minimum cost is an approximated value (almost always) because when we choose a column of a line we deny access to the rest of the elements on that column. This can lead to loss of the true minimum cost of a full line, making the value an approximation.\\\\
-    
-    -------------------NAO PERCEBO O TEXTO SEGUINTE ASS: LUCAS-----
-    
-    The permutation of the estimated minimum cost is calculated getting the index of the various minimums costs corresponded to all lines. The column index will be the permutation array index and the line index will be the value of that permutation index.
-    
+    The permutation of the estimated minimum cost is calculated by getting the index of the various minimums costs corresponded to all lines. The column index will be the permutation array index and the line index will be the value of that permutation index.
     \begin{figure}[h!]
     \centering
     \includegraphics[scale=0.25]{example_explanation.png}
@@ -470,13 +515,11 @@ Let:
     \begin{lstlisting}[style=CStyle]
 static void greedy_method_min(int n)
 {
-  // Declaration of the binary array that holds the possibility of using a
-  column (0) or not (1)
+  // Declaration of the binary array that holds the possibility of using a column (0) or not (1)
   int binary_array[n];
   memset(binary_array, 0, n * sizeof(int));
 
-  int final_min_cost = 0; // variable that holds the value of the cost using the 
-  Greedy Method (and Brute Force for the last k lines)
+  int final_min_cost = 0; // variable that holds the value of the cost using the Greedy Method (and Brute Force for the last k lines)
 
   for (int l = 0; l < n; l++) // line
   {
@@ -501,14 +544,8 @@ static void greedy_method_min(int n)
     \clearpage
     \subsubsection{The Greedy Method for maximum value}
 The Greedy Method for maximum value consists in iterating over the lines of a matrix of costs and finding the column which holds the maximum cost of that line. When that column is found it's eliminated and so is the line, therefore that column won't be used again for the rest of the method. The estimated maximum cost of the matrix n{\tiny{x}}n is the sum of the maximum cost available for each line. \\\\
-The maximum cost is approximated value (almost always) because when we choose a column of a line we deny access to the rest of the elements on that column. This can lead to loss of the true maximum cost of a full line, making the value an approximation .\\\\
-
-    -------------------NAO PERCEBO O TEXTO SEGUINTE ASS: LUCAS-----
-
-
-
-The permutation of the estimated maximum cost is calculated getting the index of the various maximums costs corresponded to all lines. The column index will be the permutation array index and the line index will be the value of that permutation index.
-    
+The maximum cost is an approximated value (almost always) because when we choose a column of a line we deny access to the rest of the elements on that column. This can lead to loss of the true maximum cost of a full line, making the value an approximation .\\\\
+The permutation of the estimated maximum cost is calculated by getting the index of the various maximums costs corresponded to all lines. The column index will be the permutation array index and the line index will be the value of that permutation index.
 \begin{figure}[h!]
     \centering
     \includegraphics[scale=0.25]{max_greedy.png}
@@ -527,20 +564,14 @@ Let:
    \begin{lstlisting}[style=CStyle]
  static void greedy_method_max(int n)
 {
-  // Declaration of the binary array that holds the possibility of using a
-  column (0) or not (1)
+  // Declaration of the binary array that holds the possibility of using a column (0) or not (1)
   int binary_array[n];
   memset(binary_array, 0, n * sizeof(int));
-
-  int final_max_cost = 0; // variable that holds the value of the cost using the 
-  Greedy Method (and Brute Force for the last k lines)
-
+  int final_max_cost = 0; // variable that holds the value of the cost using the Greedy Method (and Brute Force for the last k lines)
   for (int l = 0; l < n; l++) // line
   {
-    int c_pos; // holds the position of the column that has the minimum cost. It 
-    is used to update 'binary_array'
+    int c_pos; // holds the position of the column that has the minimum cost. It is used to update 'binary_array'
     int tmp_max_cost = minus_inf;
-
     for (int c = 0; c < n; c++) // column
     {
       if (cost[l][c] >= tmp_max_cost && binary_array[c] == 0)
@@ -559,7 +590,169 @@ Let:
     \clearpage
 
 \section{Results}
+The results were transformed into graphics using a C script that generated the data and then processed by a MATLAB script.\\\\
+C script:
+\begin{lstlisting}[style=CStyle]
+if ((what_to_show & show_histogram) != 0)
+  {
+    //start with base filename
+    char baseFilename[] = "data/result";
+    char baseFilenameH[] = "data/histo_cost";
+
+    //place to store final final name
+    const int maxSize = 50;
+    char filename[maxSize];
+    char filename_h[maxSize];
+
+    sprintf(filename, "%s_%d.txt", baseFilename, seed);
+    sprintf(filename_h, "%s_%d.txt", baseFilenameH, n);
+
+    FILE *f = fopen(filename, "a+");
+    FILE *fh = fopen(filename_h, "a+");
+    if (f == NULL || fh == NULL)
+    {
+      printf("Erro a abrir o ficheiro!\n");
+      exit(1);
+    }
+    else
+    {
+      fprintf(f, "%d\t\t%d\t\t%ld\t\t%.6f\t\t\t%d\t\t\t%d\n", seed, n, n_visited, cpu_time, min_cost, max_cost);
+      for (int i = 0; i < max_n * t_range; i++)
+      {
+        fprintf(fh, "%d\n", histogram[i]);
+      }
+    }
+
+    fclose(f);
+    fclose(fh);
+
+  }
+  \end{lstlisting}
+Example of MATLAB script for the graphic about occurrences according to the costs, using the Method Generate All Permutations, with the seeds correspondent to the group students numbers and respectively Gaussian:
+\begin{lstlisting}[style=MATStyle]
+%% Generate All Permutations 
+% Seeds = 93195 93019 91153
+clear;
+clc;
+
+T14_91153 = load("histo_cost_14_91153.txt");
+T14_93195 = load("histo_cost_14_93195.txt");
+T14_93019 = load("histo_cost_14_93019.txt");
+
+n_costs = T14_91153;
+[lin, col] = size(n_costs);
+costs = [1 : 1 : lin];
+
+c = costs';
+h = n_costs;
+m = sum(c.*h)/sum(h);
+v = sum((c-m).^2.*h)/sum(h);
+p = 1/sum(h);
+d = sqrt(2)*erfinv(2*p);
+
+first1 = find(h, 1, "first");
+last1 = find(h, 1, 'last');
+
+plot_1 = plot(c, h, "b", "LineWidth", 2)
+hold on
+plot_2 = plot(c, exp(-(c-m).^2/(2*v))./sqrt(2*pi*v).*sum(h), "r", "LineWidth", 1)
+hold on
+plot_3 = plot([c(first1) c(last1)], [h(first1) h(last1)], "bo", "LineWidth", 2)
+hold on
+
+title('GAP Group Seeds')
+xlabel('Costs')
+ylabel('Uses nOccurrences')
+xlim([first1 last1])
+
+n_costs = T14_93195;
+[lin, col] = size(n_costs);
+costs = [1 : 1 : lin];
+
+c = costs';
+h = n_costs;
+m = sum(c.*h)/sum(h);
+v = sum((c-m).^2.*h)/sum(h);
+p = 1/sum(h);
+d = sqrt(2)*erfinv(2*p);
+
+first2 = find(h, 1, "first")
+last2 = find(h, 1, 'last')
+
+if first2 < first1
+    first = first2
+else
+    first = first1
+end
+
+if last2 > last1
+    last = last2
+else
+    last = last1
+end
+
+plot_4 = plot(c, h, "g", "LineWidth", 2)
+hold on
+plot_5 = plot(c, exp(-(c-m).^2/(2*v))./sqrt(2*pi*v).*sum(h), "r", "LineWidth", 1)
+hold on
+plot_6 = plot([c(first2) c(last2)], [h(first2) h(last2)], "go", "LineWidth", 2)
+hold on
+
+title('GAP Group Seeds')
+xlabel('Costs')
+ylabel('Uses nOccurrences')
+xlim([first last])
+
+n_costs = T14_93019;
+[lin, col] = size(n_costs);
+costs = [1 : 1 : lin];
+
+c = costs';
+h = n_costs;
+m = sum(c.*h)/sum(h);
+v = sum((c-m).^2.*h)/sum(h);
+p = 1/sum(h);
+d = sqrt(2)*erfinv(2*p);
+
+first3 = find(h, 1, "first")
+last3 = find(h, 1, 'last')
+
+if first3 < first
+    first = first3
+end
+
+if last3 > last
+    last = last3
+end
+
+plot_7 = plot(c, h, "black", "LineWidth", 2)
+hold on
+plot_8 = plot(c, exp(-(c-m).^2/(2*v))./sqrt(2*pi*v).*sum(h), "r", "LineWidth", 1)
+hold on
+plot_9 = plot([c(first3) c(last3)], [h(first3) h(last3)], "blacko", "LineWidth", 2)
+hold on
+
+legend([plot_1 plot_2, plot_3, plot_4 plot_5, plot_6, plot_7, plot_8, plot_9], "91153", "Gauss", "Min/Max", "93195", "Gauss", "Min/Max", "93019", "Gauss", "Min/Max")
+
+title('GAP Group Seeds')
+xlabel('Costs')
+ylabel('Uses nOccurrences')
+xlim([first last])
+  \end{lstlisting}
+\clearpage
+Therefore, it was created the following:
+\subsection{Occurrences according to the costs}
+\begin{figure}[h!]
+    \centering
+    \includegraphics[scale=0.4]{graficos/GAP_cost_occur_91153_log.jpg}
+    \caption{Occurrences according to the costs, for each n, using the Method Generate All Permutations with seed 931153}
+\end{figure}
+(Explicar por alto o gráfico) - É possível verificar que para n's maiores atingimos custos maiores. O número de ocorrências é maior, quanto maior for o n.
+\subsection{Time spent according to the n agents/tasks}
+
+
     \clearpage
+    
 
 \section{Conclusion}
     \clearpage
@@ -572,8 +765,10 @@ Let:
 
 \vspace{5mm} %5mm vertical space
 
-[1] SILVA, Tomás Oliveira e. \textbf{Lecture notes}: Algorithms and Data Structures (AED — Algoritmos e Estruturas de Dados) LEI, MIEC, 2019/2020.
+[1] SILVA, Tomás Oliveira e. \textbf{Lecture notes}: Algorithms and Data Structures (AED — Algoritmos e Estruturas de Dados) LEI, MIECT, 2019/2020.
 
 [2] \url{https://cs.stackexchange.com/questions/72593/is-there-a-greedy-algorithm-to-solve-the-assignment-problem}
+
+[3] \url{https://www.mathworks.com/matlabcentral/answers/111952-legend-button-displays-data1-data2-etc}
 
 \end{document}
