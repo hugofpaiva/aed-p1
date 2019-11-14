@@ -7,7 +7,7 @@ We will approach how we can assign n agents (a) to n tasks (t) such that the tot
 These instructions will help to compile and run developed programs on your local machine.
 
 ### Prerequisites
-To compile programs, it is necessary to have a C compiler installed on yor local machine, for example cc. 
+To compile programs, it is necessary to have a C compiler installed on your local machine, for example cc. 
 
 ### Compiling
 The following command **compiles assignment program** (*assignment.c*) where <executable_filename>  will be the executable filename: 
