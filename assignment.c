@@ -771,21 +771,34 @@ int main(int argc, char **argv)
       }
     }
   }
-  if (argc == 6)
+  if (argc == 2 && argv[1][0] == '-' && argv[1][1] == 'r')
   {
-    if (argv[1][0] == '-' && argv[1][1] == 'r')
-    {
-      int N = atoi(argv[5]);
-      int iterations = 0;
-      for (int i = 2; i <= 4; i++)
-      {
-        seed = atoi(argv[i]); // seed = student number
+
+    //start with base filename
+    char baseFilenameR[] = "data/random";
+
+    //place to store final final name
+    const int maxSize = 50;
+    char filename_r[maxSize];
+    
+      int N = 1000000;
+
+      seed = 91153; // seed = student number
         if (seed >= 0 && seed <= 1000000)
         {
           for (int n = 13; n <= 14; n++)
           {
+            sprintf(filename_r, "%s_%d.txt", baseFilenameR, n);
+            FILE *fr = fopen(filename_r, "a+");
+            if (fr == NULL)
+            {
+              printf("Erro a abrir o ficheiro!\n");
+              exit(1);
+            }
+
+            int iterations = 0;
             init_costs(n);
-            show_solutions(n, "Problem statement", show_info_1 | show_costs);
+            //show_solutions(n, "Problem statement", show_info_1 | show_costs);
             reset_solutions();
             (void)elapsed_time();
             for (int z = 1; z <= N; z++)
@@ -795,15 +808,15 @@ int main(int argc, char **argv)
               for (int l = 0; l < n; l++)
                 a[l] = l; // initial permutation
               random_permutation(n, a);
+              //fprintf(fr, "%d\t%d\n", min_cost, iterations);
+              //fprintf(fr, "%d\t%d\n", max_cost, iterations);
             }
             cpu_time = elapsed_time();
-            show_solutions(n, "Random Permutation", show_info_1 | show_min_solution | show_max_solution);
+            show_solutions(n, "Random Permutation", show_info_1 | show_min_solution | show_max_solution | show_histogram);
           }
         }
-      }
       printf("\n");
       return 0;
-    }
   }
 
   fprintf(stderr, "usage: %s -e              # for the examples\n", argv[0]);
