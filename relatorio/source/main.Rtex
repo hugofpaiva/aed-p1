@@ -1,6 +1,9 @@
 \documentclass[10pt,english]{article}
 
 \PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+\usepackage{fourier}
+\DeclareMathAlphabet{\mathcal}{OMS}{cmsy}{m}{n}
+\SetMathAlphabet{\mathcal}{bold}{OMS}{cmsy}{b}{n}
 \usepackage[]{graphicx}
 \usepackage[]{color}
 \usepackage{xcolor}
@@ -265,6 +268,8 @@ The function receives the number of agents/task, the index of the permutation an
 \\\\
 Despite being a simple method to implement, the Brute Force search is a very exhaustive method, thus it's time consuming.
 \\\\
+The computational complexity of this method is $\mathcal{O}(n \times\ n!)$.
+\\\\
 Let:
 \begin{itemize}  
 \item[--] (int) '\verb|n|' be the number of agents/tasks;
@@ -497,7 +502,8 @@ int a[n], int partial_cost)
 \subsubsection{The Greedy Method for minimum value}
     The Greedy Method for minimum value consists in iterating over the lines of a matrix of costs and finding the column which holds the minimum cost of that line. When that column is found, it's eliminated and so is the line, therefore that column and line won't be used again for the rest of the method. The estimated minimum cost of the matrix n{\tiny{x}}n is the sum of the minimum cost available for each line. \\\\
     The minimum cost is an approximated value (almost always) because when we choose a column of a line we deny access to the rest of the elements on that column. This can lead to loss of the true minimum cost of a full line, making the value an approximation.\\\\
-    The permutation of the estimated minimum cost is calculated by getting the index of the various minimums costs corresponded to all lines. The line index will be the permutation array index and the column index will be the value of that permutation index.
+    The permutation of the estimated minimum cost is calculated by getting the index of the various minimums costs corresponded to all lines. The line index will be the permutation array index and the column index will be the value of that permutation index.\\\\
+    The computational complexity of this method is $\mathcal{O}(n^{2})$.
     \begin{figure}[h!]
     \centering
     \includegraphics[scale=0.25]{example_explanation.png}
@@ -548,7 +554,8 @@ static void greedy_method_min(int n)
     \subsubsection{The Greedy Method for maximum value}
 The Greedy Method for maximum value consists in iterating over the lines of a matrix of costs and finding the column which holds the maximum cost of that line. When that column is found it's eliminated and so is the line, therefore that column and line won't be used again for the rest of the method. The estimated maximum cost of the matrix n{\tiny{x}}n is the sum of the maximum cost available for each line. \\\\
 The maximum cost is an approximated value (almost always) because when we choose a column of a line we deny access to the rest of the elements on that column. This can lead to a loss of the true maximum cost of a full line, making the value an approximation .\\\\
-The permutation of the estimated maximum cost is calculated by getting the index of the various maximums costs corresponded to all lines. The line index will be the permutation array index and the column index will be the value of that permutation index.
+The permutation of the estimated maximum cost is calculated by getting the index of the various maximums costs corresponded to all lines. The line index will be the permutation array index and the column index will be the value of that permutation index.\\\\
+    The computational complexity of this method is $\mathcal{O}(n^{2})$.
 \begin{figure}[h!]
     \centering
     \includegraphics[scale=0.25]{max_greedy.png}
@@ -769,30 +776,30 @@ xlim([first last])
 \clearpage
 \subsection{Results from Branch and Bound}
 
-\begin{figure}[h!].
+\begin{figure}[h!]
     \includegraphics[scale=0.25]{graficos/bb_min_time.jpg}
     \caption{Execution time for n <= 17 using the Branch and Bound method for the minimum cost with the seeds correspondent to the group students numbers. \\\\
-    It can observed that this algorithm is pretty fast for n's until 16. For larger n's the execution time increases rapidly.}
+    It is observed that this algorithm is pretty fast for n's until 16. For larger n's the execution time increases rapidly.}
 \end{figure}
 
-\begin{figure}[h!].
+\begin{figure}[h!]
     \includegraphics[scale=0.28]{graficos/time_bb_max.jpg}
     \caption{Execution time for n <= 17 using the Branch and Bound method for the maximum cost with the seeds correspondent to the group students numbers. \\\\
-    It can observed that it works similar to the Branch and Bound method for the minimum values, as expected.
+    It is observed that it works similar to the Branch and Bound method for the minimum values, as expected.
     Fast for smaller n's and slower as n raises.}
 \end{figure}
 
-\begin{figure}[h!].
+\begin{figure}[h!]
     \includegraphics[scale=0.25]{graficos/time_bbminmax.jpg}
     \caption{Execution time for n <= 17 using the Branch and Bound method for the minimum and maximum cost with the seeds correspondent to the group students numbers, at the same time.\\\\ 
-    The results were similar to the ones got for Branch and Bound minimum and Branch and Bound maximum.}
+    The results are similar to the ones got for Branch and Bound minimum and Branch and Bound maximum.}
 \end{figure}
 
 
-\begin{figure}[h!].
+\begin{figure}[h!]
     \includegraphics[scale=0.4]{graficos/BB/bb_min_91153_cost_ocurr_log.jpg}
     \caption{Occurrences according to the permutations costs, for each n, using the Branch and Bound method for the minimum cost with seed 91153 \\\\
-    Observing the graphic, it can be concluded that the number of occurrences depends on how large is n number. It's noticeable that for a larger n, a big part of minimum costs are centered in the interval [200, 400]. It's happened because at some point of the getting all permutation's process, it is known that the minimum cost saved is less than the sum with the next ideal minimum cost.
+    Observing the graphic, it can be concluded that the number of occurrences depends on how large is n number. It's noticeable that for a larger n, a big part of minimum costs are centered in the interval [200, 400]. It happened because at some point of the getting all permutation's process, it is known that the minimum cost saved is less than the sum with the next ideal minimum cost.
     }
 \end{figure}
 \\\\
@@ -800,15 +807,15 @@ xlim([first last])
 \begin{figure}[h!]
     \includegraphics[scale=0.4]{graficos/BB/bb_min_n17.jpg}
     \caption{Occurrences according to the permutations costs, for n=17, using the Branch and Bound method for the minimum cost, with the seeds correspondent to the group students numbers\\\\
-    To compare the group students numbers seeds, the results were combined in a single graph with each seed Cost/Occurrences. It's clear that it varies a lot depending on which seed it's used. Note that the min costs are centered in the same range [300, 400], even with a different number of occurrences.}
+    To compare the group students numbers seeds, the results were combined in a single graph with each seed Cost/Occurrences. It's clear that it varies a lot depending on which seed it's used. Note that the minimum costs are centered in the same range [300, 400], even with a different number of occurrences.}
 \end{figure}
 \\\\
 
 \begin{figure}[h!]
     \includegraphics[scale=0.3]{graficos/BB/bb_max_n_occurr_log.jpg}
     \caption{Occurrences according to the permutations costs, for each n, using the Branch and Bound method for the maximum cost with seed 91153\\\\
-    As it was raised the n, the results tend to have new maximum costs and a larger number of occurrences.  
-    Increasing the number n, there is a significant growth of maximum costs. 
+    As it is raised the n, the results tend to have new maximum costs and a larger number of occurrences.  
+    Increasing the number n, means a significant growth of maximum costs. 
     }
 \end{figure}
 
@@ -826,9 +833,9 @@ xlim([first last])
 
 \begin{figure}[h!]
     \includegraphics[scale=0.3]{graficos/compare.jpg}
-    \caption{Comparing both methods: Generate All Permutations and Branch and Bound.
+    \caption{Comparing both methods: Generate All Permutations and Branch and Bound
     \\\\
-    Using small n values, the program time execution for both methods Generate All Permutations and Branch and Bounded are very similar. However, there is a big contrast on time performance between these methods when those n values are increased. For the n values represented, time performance difference is very low, but it can be predicted that for large n values, it can be more significant. In this case, it can be concluded that Branch and Bound method can be a better choice for large scale computing.}
+    Using small n values, the program time execution for both methods Generate All Permutations and Branch and Bounded are very similar. However, there is a big contrast on time performance between these methods when those n values are increased. For the n values represented, time performance difference is very low, but it can be predicted that for large n values, it can be more significant. \\In this case, it can be concluded that Branch and Bound method can be a better choice for large scale computing.}
 \end{figure}
 
 
@@ -836,33 +843,49 @@ xlim([first last])
 \begin{figure}[h!]
     \includegraphics[scale=0.26]{graficos/BB/hist_91153.jpg}
     \caption{Comparison between the occurrences according to the permutations costs, for n=14, using the Branch and Bound method for the minimum and maximum cost and the Generate All Permutations method with the seed 91153\\\\
-    Considering the graphic, it was observed that the Generate All Permutations method is much closer to a normal distribution than the Branch and Bound method. The Branch and Bound method has more diverged values for the minimum and the maximum costs, while the Generate All Permutations method has more centered values.}
+    Considering the graphic, it is observed that the Generate All Permutations method is much closer to a normal distribution than the Branch and Bound method. The Branch and Bound method has more diverged values for the minimum and the maximum costs, while the Generate All Permutations method has more centered values.}
 \end{figure}
 \\\\
 
-
 \clearpage
+\subsection{Results from Random Permutations}
+
+\begin{figure}[h!]
+    \includegraphics[scale=0.4]{graficos/Random/histo_random.jpg}
+    \caption{Occurrences according to the permutations costs, for n=13 and n=14, using the Random Permutations method for the minimum and maximum cost with the seed 91153 and running the function one million times\\\\
+    Considering the graphic, it is observed that the Random Permutations method is closer to a normal distribution for the permutations generated and this seed. Besides changing the n values, the results stayed close to a normal distribution. Also, it is possible to see that for n=13, the most frequent costs are gathered around [300, 500], and for n=14 around [400, 600].}
+\end{figure}
+\\\\
+
+\begin{figure}[h!]
+    \includegraphics[scale=0.4]{graficos/Random/rand_permVSreal.jpg}
+    \caption{Maximum and minimum costs vs real maximum and minimum costs, for n=13 and n=14, using the Random Permutations method with the seed 91153 and running the function one million times\\\\
+    It is possible to compare the maximum and minimum cost resulted from this method (MinN13, MaxN13...) and the real ones (RealMin13, RealMax13...), for a specific n.\\
+    Using the information from the other methods and considering the graphic, it is observed that for the permutations generated running this function one million times, none of them was the permutation with the actual minimum or maximum cost for that n. Considering that, there were 13! possible permutations for n=13, and 14! possible permutations for n=14 but as it only ran one million times, the function, in the best scenario, passed by 1 million different permutations. Despite being a very large number, for this possible permutations it wasn't enough to go through the permutation that had the true maximum and minimum cost for that n.}
+\end{figure}
+
+
+
+
 \clearpage
    
     
 
 \section{Conclusion}
 
-\par This report introduced a set of approaches to the assignment problem.  Not only we learnt to look at a problem in several different ways but, by studying each solution, we managed to assess what were the differences, the pros and the cons.
+\par This report introduced a set of approaches to the assignment problem.  Not only it was learnt to look at a problem in several different ways but, by studying each solution, it was managed to assess what were the differences, the pros and the cons.
 
-\par In short, brainstorming about this problem and solving it has helped our group to develop crucial search, cooperation,  communication and problem-solving skills which will help us in further reports and in our future work-life. 
-
-\par It was studied and learned various approaches to solve this problem: Generate All Permutations, Branch and Bound, Random Permutations and Greedy.
+\par There were studied and learned various approaches to solve this problem: Generate All Permutations, Branch and Bound, Random Permutations and Greedy.
 
 \par Using the Generate All Permutations method, it was concluded that, despite having accurate results, this method is time-consuming as the algorithm runs across all the possible cases.
 
-\par Using the Branch and Bound method, it was concluded that this method is much faster than the previous one because it can fix the values of the "current" maximum or minimum and not run across all the permutations with bigger or smaller costs. This way, we avoid running across all possible cases.
+\par The Branch and Bound method is much faster than the previous one (it ran instantly for smaller n's) because it can fix the values of the "current" maximum or minimum and not run across all the permutations with bigger or smaller costs. This way, some possible cases were bypassed.
 
-\par Using the Random Permutations method, it was concluded that this method is much faster than the Generate All Permutations when it ran less times than the total number of possible permutations. However, this brings a problem because it won't pass by all possible permutations and even the one that pass can be repeated, decreasing immensely the accuracy. If it ran more times than the total number of possible permutations the method is just wasting computational power. 
+\par Also, it was concluded that Random Permutations method is much faster than the Generate All Permutations when it ran less times than the total number of possible permutations. However, this brings a problem because it won't pass by all possible permutations and even the one that pass can be repeated, decreasing immensely the accuracy. If it runs more times than the total number of possible permutations, the method is just wasting computational power. 
 
-\par Using Greedy method, it was concluded that it's much faster but uses a lazy criteria. It runs each line once, find the minimum value and remove the line and column where that minimum was located. By doing so, it is removed the size of the search for the next iteration but also, it lose precision on the final result.
+\par Finally, the Greedy method has a better performance than the others but uses a lazy criteria. It runs each line once, find the minimum value and remove the line and column where that minimum was located. By doing so, it is removed the size of the search for the next iteration but also, it lose precision on the final result.
 
-\par In sum, every algorithm has its own value, one is slower but accurate and others are faster but not so accurate.
+\par In sum, every algorithm has its own value, some are slower but accurate and others are faster but not so accurate.
 
 \clearpage
 
