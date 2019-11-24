@@ -667,7 +667,7 @@ int main(int argc, char **argv)
         generate_all_permutations_branch_and_bound_min(n, 0, a, 0);
         generate_all_permutations_branch_and_bound_max(n, 0, a, 0);
         show_solutions(n, "Brute force with branch-and-bound", show_all);
-        for (int z=0; z<1000000; z++)
+        for (int z = 0; z < 1000000; z++)
           random_permutation(n, a);
         show_solutions(n, "Random Permutation", show_all);
         greedy_method_min(n);
@@ -688,7 +688,7 @@ int main(int argc, char **argv)
       {
         for (int n = 1; n <= max_n; n++)
         {
-          init_costs(n);         
+          init_costs(n);
           if (n <= 14) // use a smaller limit here while developing your code
           {
             int a[n];
