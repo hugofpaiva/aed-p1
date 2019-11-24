@@ -25,7 +25,7 @@ cc -Wall -O2 assignment.c -o <executable_filename> -lm
 -b <seed>					uses Branch and Bound method with specified Seed value
 -r <seed> <seed> <seed> <N>	                uses Brute Force method with Random Permutations generated N times and three specified Seed value
 -g <seed> 					uses Greedy method with specified Seed value
--a <seed>                                       runs all the previous methods with specified Seed value
+-a <seed>                                       runs all the previous methods with specified Seed value and Random Permutations 1000000 times
 ```
 
 
