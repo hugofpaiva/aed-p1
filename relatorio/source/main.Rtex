@@ -75,6 +75,27 @@
     backgroundcolor=\color{light-gray}
 }
 
+\lstdefinestyle{Python}{
+   commentstyle=\color{mGreen},
+    keywordstyle=\color{magenta},
+    numberstyle=\tiny\color{mGray},
+    stringstyle=\color{mPurple},
+    basicstyle=\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    tabsize=2,
+    language=Python,
+    frame=single,
+    backgroundcolor=\color{light-gray}
+}
+
 % Set page margins
 \usepackage[top=100pt,bottom=100pt,left=68pt,right=66pt]{geometry}
 
@@ -134,9 +155,9 @@
 	{\Huge \textbf{The Assignment Problem}} \\
 	\vspace{1cm}
 	\vspace{4cm}
-	{\normalsize Hugo Paiva, 93195 \\ 
-	             João Laranjo, 91153 \\ 
-	             Lucas Sousa, 93019\par}
+	{\normalsize Hugo Paiva, 93195 - 33.3\% \\ 
+	             João Laranjo, 91153 - 33.3\% \\ 
+	             Lucas Sousa, 93019 - 33.3\% \par}
 	\vspace{2cm}
 
     \includegraphics[scale=0.20]{logo_ua.png}
@@ -196,7 +217,7 @@
     -g <seed> ................. Uses Greedy method with specified Seed value;
     
     -a <seed>.................. Runs all the previous methods with specified
-    Seed value.
+                                Seed value and Random Permutations 1000000 times.
         \end{lstlisting}
 
 \clearpage
@@ -602,7 +623,8 @@ Let:
     \clearpage
 
 \section{Results}
-The results were transformed into graphics using a C script that generated the data and then processed by a MATLAB script.\\\\
+The results were transformed into graphics using a C script that generated the data and then processed by a MATLAB script.\\
+To generate the results tables, it was made a Python script using the PrettyTable, PTable and OS modules.\\\\
 C script:
 \begin{lstlisting}[style=CStyle]
 if ((what_to_show & show_histogram) != 0)
@@ -640,6 +662,8 @@ if ((what_to_show & show_histogram) != 0)
 
   }
   \end{lstlisting}
+  \hfill \break
+  \hfill \break
 Example of MATLAB script for the graphic about occurrences according to the costs, using the Method Generate All Permutations, with the seeds correspondent to the group students numbers and respectively Gaussian:
 \begin{lstlisting}[style=MATStyle]
 %% Generate All Permutations 
@@ -751,6 +775,37 @@ xlabel('Costs')
 ylabel('Uses nOccurrences')
 xlim([first last])
   \end{lstlisting}
+\hfill \break
+\hfill \break
+  Python script:
+  \begin{lstlisting}[style=Python] 
+from prettytable import PrettyTable
+import os
+
+try:
+    for filename in os.listdir('dados_tabela'):
+        f = open("dados_tabela/"+filename, "r")
+        line = f.readline()
+        x = PrettyTable()
+        title_table = filename[0:len(filename)-4]
+        x.title = title_table
+        x.field_names = ["Seed", "n", "n Visited",
+                         "CPU Time", "Minimum Cost", "Maximum Cost"]
+        while line:
+            values = line.strip("\n").split("\t")
+            while("" in values):
+                values.remove("")
+
+            x.add_row([values[0], values[1], values[2],
+                       values[3], values[4], values[5]])
+            line = f.readline()
+        print(x)
+        print("\n")
+
+finally:
+    f.close()
+
+  \end{lstlisting}{}
 \clearpage
 
 \subsection{Results from Generating All Permutations}
@@ -848,6 +903,7 @@ xlim([first last])
 \\\\
 
 \clearpage
+
 \subsection{Results from Random Permutations}
 
 \begin{figure}[h!]
@@ -867,6 +923,10 @@ xlim([first last])
 
 
 
+\clearpage
+
+\subsection{Results from Greedy}
+No time graphics were generated for this method because the execution time is nearly 0. The minimum and maximum costs are mainly different from the real ones because of the referred problem during the method explanation. 
 \clearpage
    
     

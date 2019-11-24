@@ -1,7 +1,6 @@
 from prettytable import PrettyTable
 import os
 
-
 try:
     for filename in os.listdir('dados_tabela'):
         f = open("dados_tabela/"+filename, "r")
@@ -21,7 +20,6 @@ try:
             line = f.readline()
         print(x)
         print("\n")
-
 
 finally:
     f.close()
