@@ -290,8 +290,8 @@ static void show_solutions(int n, char *header, int what_to_show)
   if ((what_to_show & show_histogram) != 0)
   {
     //start with base filename
-    char baseFilename[] = "data/result";
-    char baseFilenameH[] = "data/histo_cost";
+    char baseFilename[] = "data/result/";
+    char baseFilenameH[] = "data/histo_cost/";
 
     //place to store final final name
     const int maxSize = 50;
@@ -527,6 +527,7 @@ static void greedy_method_min(int n)
         tmp_min_cost = cost[l][c];
         c_pos = c;
       }
+      n_visited++;
     }
     binary_array[c_pos] = 1;
     min_cost_assignment[l] = c_pos;
@@ -554,6 +555,7 @@ static void greedy_method_max(int n)
         tmp_max_cost = cost[l][c];
         c_pos = c;
       }
+      n_visited++;
     }
     binary_array[c_pos] = 1;
     max_cost_assignment[l] = c_pos;
@@ -597,6 +599,7 @@ void random_permutation(int n, int t[n])
     for (int i = 0; i < n; i++)
       min_cost_assignment[i] = t[i];
   }
+  n_visited++;
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -660,13 +663,17 @@ int main(int argc, char **argv)
         reset_solutions();
         (void)elapsed_time();
         generate_all_permutations(n, 0, a);
+        show_solutions(n, "Brute force", show_all);
         generate_all_permutations_branch_and_bound_min(n, 0, a, 0);
         generate_all_permutations_branch_and_bound_max(n, 0, a, 0);
-        random_permutation(n, a);
+        show_solutions(n, "Brute force with branch-and-bound", show_all);
+        for (int z=0; z<1000000; z++)
+          random_permutation(n, a);
+        show_solutions(n, "Random Permutation", show_all);
         greedy_method_min(n);
         greedy_method_max(n);
+        show_solutions(n, "Greedy", show_all);
         cpu_time = elapsed_time();
-        show_solutions(n, "B & B", show_all);
         printf("\n");
       }
     }
@@ -681,11 +688,7 @@ int main(int argc, char **argv)
       {
         for (int n = 1; n <= max_n; n++)
         {
-          init_costs(n);
-          show_solutions(n, "\nProblem statement", show_info_1 | show_costs);
-          //
-          // 2.
-          //
+          init_costs(n);         
           if (n <= 14) // use a smaller limit here while developing your code
           {
             int a[n];
@@ -695,7 +698,7 @@ int main(int argc, char **argv)
             (void)elapsed_time();
             generate_all_permutations(n, 0, a);
             cpu_time = elapsed_time();
-            show_solutions(n, "Brute force", show_info_2 | show_min_solution | show_max_solution | show_histogram);
+            show_solutions(n, "Brute force", show_all);
           }
         }
       }
@@ -723,11 +726,11 @@ int main(int argc, char **argv)
               a[i] = i; // initial permutation
             reset_solutions();
             (void)elapsed_time();
-            //generate_all_permutations_branch_and_bound_min(n, 0, a, 0);
+            generate_all_permutations_branch_and_bound_min(n, 0, a, 0);
             generate_all_permutations_branch_and_bound_max(n, 0, a, 0);
             cpu_time = elapsed_time();
             printf("%d\n", n);
-            show_solutions(n, "Brute force with branch-and-bound", show_info_2 | show_min_solution | show_max_solution | show_histogram);
+            show_solutions(n, "Brute force with branch-and-bound", show_all);
           }
         }
       }
@@ -764,59 +767,41 @@ int main(int argc, char **argv)
           generate_all_permutations_branch_and_bound_min(n, 0, a, 0);
           cpu_time = elapsed_time();
           printf("%d\n", n);
-          show_solutions(n, "Brute force with branch-and-bound", show_info_2 | show_min_solution);
+          show_solutions(n, "Greedy with branch-and-bound", show_all);
         }
         printf("\n");
         return 0;
       }
     }
   }
-  if (argc == 2 && argv[1][0] == '-' && argv[1][1] == 'r')
+  if (argc == 6 && argv[1][0] == '-' && argv[1][1] == 'r')
   {
 
-    //start with base filename
-    char baseFilenameR[] = "data/random";
-
-    //place to store final final name
-    const int maxSize = 50;
-    char filename_r[maxSize];
-    
-      int N = 1000000;
-
-      seed = 91153; // seed = student number
-        if (seed >= 0 && seed <= 1000000)
+    int N = atoi(argv[5]);
+    for (int a = 2; a <= 4; a++)
+    {
+      seed = atoi(argv[a]);
+      if (seed >= 0 && seed <= 1000000)
+      {
+        for (int n = 13; n <= 14; n++)
         {
-          for (int n = 13; n <= 14; n++)
+          init_costs(n);
+          reset_solutions();
+          (void)elapsed_time();
+          for (int z = 1; z <= N; z++)
           {
-            sprintf(filename_r, "%s_%d.txt", baseFilenameR, n);
-            FILE *fr = fopen(filename_r, "a+");
-            if (fr == NULL)
-            {
-              printf("Erro a abrir o ficheiro!\n");
-              exit(1);
-            }
-
-            int iterations = 0;
-            init_costs(n);
-            //show_solutions(n, "Problem statement", show_info_1 | show_costs);
-            reset_solutions();
-            (void)elapsed_time();
-            for (int z = 1; z <= N; z++)
-            {
-              iterations++;
-              int a[n];
-              for (int l = 0; l < n; l++)
-                a[l] = l; // initial permutation
-              random_permutation(n, a);
-              //fprintf(fr, "%d\t%d\n", min_cost, iterations);
-              //fprintf(fr, "%d\t%d\n", max_cost, iterations);
-            }
-            cpu_time = elapsed_time();
-            show_solutions(n, "Random Permutation", show_info_1 | show_min_solution | show_max_solution | show_histogram);
+            int a[n];
+            for (int l = 0; l < n; l++)
+              a[l] = l; // initial permutation
+            random_permutation(n, a);
           }
+          cpu_time = elapsed_time();
+          show_solutions(n, "Random Permutation", show_all);
         }
-      printf("\n");
-      return 0;
+      }
+    }
+    printf("\n");
+    return 0;
   }
 
   fprintf(stderr, "usage: %s -e              # for the examples\n", argv[0]);
