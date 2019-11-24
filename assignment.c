@@ -743,7 +743,7 @@ int main(int argc, char **argv)
       seed = atoi(argv[2]); // seed = student number
       if (seed >= 0 && seed <= 1000000)
       {
-        for (int n = 32; n > 16; n--) // Correr o método greedy
+        for (int n = 32; n > 0; n--) // Correr o método greedy
         {
           init_costs(n);
           int a[n];
