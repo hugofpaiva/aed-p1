@@ -941,17 +941,17 @@ finally:
 \subsection{Results from Random Permutations}
 
 \begin{figure}[h!]
-    \includegraphics[scale=0.7]{graficos/tabelas/random_93195.png}
+    \includegraphics[scale=0.8]{graficos/tabelas/random_93195.png}
     \caption{Results for the Random Permutations method with seed 93195}
 \end{figure}
 
 \begin{figure}[h!]
-    \includegraphics[scale=0.7]{graficos/tabelas/random_93019.png}
+    \includegraphics[scale=0.8]{graficos/tabelas/random_93019.png}
     \caption{Results for the Random Permutations method with seed 93019}
 \end{figure}
 
 \begin{figure}[h!]
-    \includegraphics[scale=0.7]{graficos/tabelas/random_91153.png}
+    \includegraphics[scale=0.8]{graficos/tabelas/random_91153.png}
     \caption{Results for the Random Permutations method with seed 91153}
 \end{figure}
 
