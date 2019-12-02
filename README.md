@@ -27,5 +27,12 @@ cc -Wall -O2 assignment.c -o <executable_filename> -lm
 -g <seed> 					uses Greedy method with specified Seed value
 -a <seed>                                       runs all the previous methods with specified Seed value and Random Permutations 1000000 times
 ```
+## Details
+All the details, including the results, can be found in the [Work Report] (/relatorio/AED_Report.pdf).
 
+## Authors
+
+ - **Hugo Paiva de Almeida - 93195**
+ - **João Laranjo - 91153**
+ - **Lucas Sousa - 93019**
 
