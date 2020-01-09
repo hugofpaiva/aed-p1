@@ -36,6 +36,6 @@ All the details, including the results, can be found in the [Work Report](/relat
  - **João Laranjo - 91153**
  - **Lucas Sousa - 93019**
  
-  ## Nota
-Classificação obtida de **19** valores em 20.
+  ## Grade
+Evaluated with **19** out of 20.
 
