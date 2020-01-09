@@ -35,4 +35,7 @@ All the details, including the results, can be found in the [Work Report](/relat
  - **Hugo Paiva de Almeida - 93195**
  - **João Laranjo - 91153**
  - **Lucas Sousa - 93019**
+ 
+  ## Nota
+Classificação obtida de **19** valores em 20.
 
