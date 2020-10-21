@@ -34,7 +34,7 @@ All the details, including the results, can be found in the [Work Report](/relat
 
  - **[Hugo Paiva de Almeida](https://github.com/hugofpaiva) - 93195**
  - **[João Laranjo](https://github.com/joaolaranjo) - 91153**
- - **Lucas Sousa - 93019**
+ - **[Lucas Sousa](https://github.com/l-sousa) - 93019**
  
   ## Grade
 Evaluated with **19** out of 20.
